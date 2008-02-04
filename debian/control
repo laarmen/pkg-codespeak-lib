@@ -6,6 +6,7 @@ Uploaders: Alexandre Fayolle <afayolle@debian.org>, Chris Lamb <chris-lamb.co.uk
 Build-Depends: python-all-dev (>= 2.3.5-10), python-central (>= 0.5), debhelper (>= 5.0.37.1), dpatch, python-docutils, xsltproc, docbook-xsl, subversion
 XS-Python-Version: all
 Standards-Version: 3.7.2
+Homepage: http://codespeak.net/py/
 
 Package: python-codespeak-lib
 Architecture: any
@@ -21,5 +22,3 @@ Description: The pylib library containing py.test, greenlets and other niceties
  to use than the existing ones, py.xml ("a fast'n'easy way to generate
  xml/html documents"), py.magic.greenlet ("Lightweight in-process concurrent
  programming") and many more features.
- .
- homepage: http://codespeak.net/py/
