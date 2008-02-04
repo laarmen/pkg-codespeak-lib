@@ -1,0 +1,9 @@
+Document: python-codespeak-lib
+Title: pylib documentation
+Author: Various Authors
+Abstract: How to use pylib
+Section: Apps/Programming
+
+Format: HTML
+Index: /usr/share/doc/python-codespeak-lib/py/doc/index.html
+Files: /usr/share/doc/python-codespeak-lib/py/doc/*.html /usr/share/doc/python-codespeak-lib/py/doc/*/*.html 

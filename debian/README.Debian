@@ -1,0 +1,19 @@
+pylib for Debian
+----------------
+
+Dependencies
+============
+
+To use some functionnalities, you will need to install some Recommended packages:
+ * py.test --tkinter: python-tkinter
+ * py.test remote session support: screen, rsync
+ * py.rest pdf support: graphviz, tetex-bin, gs-esp or gs-gpl, ps2eps
+
+
+Greenlet support
+================
+
+The greenlet module is not available for all platforms. The
+development team welcomes patches improving the situation.
+
+ -- Alexandre Fayolle <afayolle@debian.org>, Thu, 11 Jan 2007 16:40:45 +0100

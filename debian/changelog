@@ -1,0 +1,83 @@
+codespeak-lib (0.9.0-3.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Disable apigen invocation. (closes: #439953)
+
+ -- Bastian Blank <waldi@debian.org>  Sat, 08 Sep 2007 19:40:36 +0200
+
+codespeak-lib (0.9.0-3) unstable; urgency=low
+
+  * Added missing build dependencies on subversion and ssh
+  * Patched code depending on the presence of .svn directories in apigen
+
+ -- Alexandre Fayolle <afayolle@debian.org>  Wed, 21 Feb 2007 10:04:13 +0100
+
+codespeak-lib (0.9.0-2) unstable; urgency=low
+
+  * Added patch to allow the apigen documentation to build even if the
+    platform does not support greenlets
+
+ -- Alexandre Fayolle <afayolle@debian.org>  Tue, 20 Feb 2007 14:21:08 +0100
+
+codespeak-lib (0.9.0-1) unstable; urgency=low
+
+  * Added myself to the list of uploaders, with Guilherme's assent
+  * New upstream release (closes: #411058)
+  * Fixed greenlet build (closes: #355143)
+  * removed deprecated script rst2pdf (closes: #399839), use py.rest instead.
+  * Updated build dependencies and binary dependencies
+  * Wrote an stdlib distutils based setup.py to install the modules
+  * Build HTML documentation
+  * Added man pages for py.rest, py.test, py.cleanup, py.lookup and py.countloc
+  * Acknowledge Matthias Klose's NMU (closes: #361203)
+
+ -- Alexandre Fayolle <afayolle@debian.org>  Thu, 15 Feb 2007 09:54:51 +0100
+
+codespeak-lib (0.7-svn20060621-1) unstable; urgency=low
+
+  * New upstream version.
+  * Split the patches inside debian/patches/ and use dpatch.
+
+ -- Guilherme Salgado <salgado@async.com.br>  Tue, 18 Jul 2006 8:44:23 -0300
+
+codespeak-lib (0.7-svn20050721-5) unstable; urgency=low
+
+  * Convert to updated python policy. Closes: #373304.
+  * Add the upstream name 'pylib' in the short package description.
+    Closes: #361203.
+
+ -- Matthias Klose <doko@debian.org>  Sat, 17 Jun 2006 13:43:51 +0200
+
+codespeak-lib (0.7-svn20050721-4) unstable; urgency=low
+
+  * Fix debian/rules to not add #!python2.4 on the files for the 2.3 package. 
+    (Closes: #345383)
+  * Add a -X.py to dh_compress to make sure .py files are not gziped.
+    (Closes: #361201)
+
+ -- Guilherme Salgado <salgado@async.com.br>  Mon, 17 Apr 2006 16:04:23 -0300
+
+codespeak-lib (0.7-svn20050721-3) unstable; urgency=low
+
+  * Make sure greenlet.so is installed in the right path. (Closes: #345727)
+
+ -- Guilherme Salgado <salgado@async.com.br>  Sun, 22 Jan 2006 17:04:23 -0200
+
+codespeak-lib (0.7-svn20050721-2) unstable; urgency=low
+
+  * Fixed some installation problems and removed windows-specific scripts.
+
+ -- Guilherme Salgado <salgado@async.com.br>  Mon, 12 Dec 2005 16:41:23 -0200
+
+codespeak-lib (0.7.20050829-0ubuntu1) breezy; urgency=low
+
+  * Clean up the packaging.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 29 Aug 2005 16:36:09 +0200
+
+codespeak-lib (0.7-svn20050721) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Guilherme Salgado <salgado@async.com.br>  Sat, 23 Jul 2005 10:48:20 -0300
+

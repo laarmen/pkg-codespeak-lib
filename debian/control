@@ -1,0 +1,25 @@
+Source: codespeak-lib
+Section: python
+Priority: optional
+Maintainer: Guilherme Salgado <salgado@async.com.br>
+Uploaders: Alexandre Fayolle <afayolle@debian.org>
+Build-Depends: python-all-dev (>= 2.3.5-10), python-central (>= 0.5), debhelper (>= 5.0.37.1), dpatch, python-docutils, xsltproc, docbook-xsl, subversion
+XS-Python-Version: all
+Standards-Version: 3.7.2
+
+Package: python-codespeak-lib
+Architecture: any
+Depends: ${python:Depends}, ${shlibs:Depends}
+Conflicts: python-pylib, python2.3-codespeak-lib, python2.4-codespeak-lib
+Replaces: python-pylib, python2.3-codespeak-lib, python2.4-codespeak-lib
+Recommends: python-tkinter, python-docutils
+Suggests:  screen, rsync, graphviz, tetex-bin, gs-gpl|gs-esp, ps2eps, subversion
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
+Description: The pylib library containing py.test, greenlets and other niceties
+ It includes py.test, whose focus is to get a test environment that's easier
+ to use than the existing ones, py.xml ("a fast'n'easy way to generate
+ xml/html documents"), py.magic.greenlet ("Lightweight in-process concurrent
+ programming") and many more features.
+ .
+ homepage: http://codespeak.net/py/

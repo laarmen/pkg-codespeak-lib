@@ -1,0 +1,299 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+
+<!--
+
+Process this file with an XSLT processor: `xsltproc \
+-''-nonet /usr/share/sgml/docbook/stylesheet/xsl/nwalsh/\
+manpages/docbook.xsl manpage.dbk'.  A manual page
+<package>.<section> will be generated.  You may view the
+manual page with: nroff -man <package>.<section> | less'.  A
+typical entry in a Makefile or Makefile.am is:
+
+DB2MAN=/usr/share/sgml/docbook/stylesheet/xsl/nwalsh/\
+manpages/docbook.xsl
+XP=xsltproc -''-nonet
+
+manpage.1: manpage.dbk
+        $(XP) $(DB2MAN) $<
+    
+The xsltproc binary is found in the xsltproc package.  The
+XSL files are in docbook-xsl.  Please remember that if you
+create the nroff version in one of the debian/rules file
+targets (such as build), you will need to include xsltproc
+and docbook-xsl in your Build-Depends control field.
+
+-->
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>Alexandre</firstname>">
+  <!ENTITY dhsurname   "<surname>Fayolle</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>jan.  8, 2007</date>">
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>afayolle@debian.org</email>">
+  <!ENTITY dhusername  "Alexandre Fayolle">
+  <!ENTITY dhucpackage "<refentrytitle>python-codespeak-lib</refentrytitle>">
+  <!ENTITY dhpackage   "py.test">
+
+  <!ENTITY debian      "<productname>Debian</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+  <!ENTITY gpl         "&gnu; <acronym>GPL</acronym>">
+]>
+
+<refentry>
+  <refentryinfo>
+    <address>
+      &dhemail;
+    </address>
+    <author>
+      &dhfirstname;
+      &dhsurname;
+    </author>
+    <copyright>
+      <year>2007</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </refentryinfo>
+  <refmeta>
+    &dhucpackage;
+
+    &dhsection;
+  </refmeta>
+  <refnamediv>
+    <refname>&dhpackage;</refname>
+
+    <refpurpose>pylib test runner</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+
+      <arg><option><replaceable>option</replaceable></option></arg>
+
+      <arg><option><replaceable>query</replaceable></option></arg>
+      <arg><option><replaceable>filenames of tests...</replaceable></option></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>This manual page documents briefly the
+      <command>&dhpackage;</command> command.</para>
+
+    <para>This manual page was written for the &debian; distribution
+    because the original program does not have a manual page.
+    Instead, it has documentation in html available in
+    /usr/share/doc/python-codespeak-lib/py/doc/test.html.</para>
+
+    <para><command>&dhpackage;</command> is a program that runs tests
+    in a module or directory specified on the command line. It looks
+    for functions and methods with names starting with 'test_' and run
+    those methods. Assertions about test outcomes are done via the
+    standard 'assert' statement.</para>
+
+  </refsect1>
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <para>These programs follow the usual &gnu; command line syntax,
+      with long options starting with two dashes (`-').  A summary of
+      options is included below. </para>
+
+    <variablelist>
+      <varlistentry>
+        <term><option>-h</option>
+          <option>--help</option>
+        </term>
+        <listitem>
+          <para>Show summary of options and exit.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-v</option>
+          <option>--verbose</option>
+        </term>
+        <listitem>
+          <para>Increase verbosity.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-x</option>
+          <option>--exitfirst</option>
+        </term>
+        <listitem>
+          <para>Exit on first error or failed test.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-s</option>
+          <option>--nocapture</option>
+        </term>
+        <listitem>
+          <para>Disable catching of sys.stdout/stderr output.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-k KEYWORD</option>
+        </term>
+        <listitem>
+          <para>only run tests matching the given keyword expression </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-l</option>
+          <option>--showlocals</option>
+        </term>
+        <listitem>
+          <para>Show local variables in traceback (disabled by default) </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--pdb</option>
+        </term>
+        <listitem>
+          <para>Start the python debugger on errors </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--tb=TBSTYLE</option>
+        </term>
+        <listitem>
+          <para>set the traceback style. TBSTYLE can be 'long', 'short' or 'no') </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--fulltrace</option>
+        </term>
+        <listitem>
+          <para>Do not cut tracebacks (default behavior is to cut) </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--nomagic</option>
+        </term>
+        <listitem>
+          <para>Refrain from using magic as much as possible </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--collectonly</option>
+        </term>
+        <listitem>
+          <para>Only collect tests, don't execute them </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--traceconfig</option>
+        </term>
+        <listitem>
+          <para>Trace consideration of conftest.py files </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--apigen</option>
+        </term>
+        <listitem>
+          <para>Generate api documentation while testing (requires initpkg/conftest config). </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--tkinter</option>
+        </term>
+        <listitem>
+          <para>use tkinter test session frontend (requires python-tkinter). </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--looponfailing</option>
+        </term>
+        <listitem>
+          <para>Loop on failing tests </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--session=SESSION</option>
+        </term>
+        <listitem>
+          <para>Use the given session class. Default is 'terminal'. </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--exec</option>
+        </term>
+        <listitem>
+          <para>python executable with which the tests should be run</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-w</option>
+          <option>--startserver</option>
+        </term>
+        <listitem>
+          <para>Start an HTTP server on localhost:8000 for test. </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term>
+          <option>--runbrowser</option>
+        </term>
+        <listitem>
+          <para>Point your browser to the server started with --startserver </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-r</option>
+          <option>--rest</option>
+        </term>
+        <listitem>
+          <para>Restructured Text test result output. </para>
+        </listitem>
+      </varlistentry>
+
+    </variablelist>
+  </refsect1>
+  <refsect1>
+    <title>AUTHOR</title>
+
+    <para>This manual page was written by &dhusername; &dhemail; for
+      the &debian; system (but may be used by others).  Permission is
+      granted to copy, distribute and/or modify this document under
+      the terms of the &gnu; General Public License, Version 2 any 
+	  later version published by the Free Software Foundation.
+    </para>
+	<para>
+	  On Debian systems, the complete text of the GNU General Public
+	  License can be found in /usr/share/common-licenses/GPL.
+	</para>
+
+  </refsect1>
+</refentry>
+

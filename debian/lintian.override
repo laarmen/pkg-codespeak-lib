@@ -1,0 +1,2 @@
+python-codespeak-lib: script-not-executable ./usr/share/pycentral/python-codespeak-lib/site-packages/py/execnet/script/shell.py
+python-codespeak-lib: script-not-executable ./usr/share/pycentral/python-codespeak-lib/site-packages/py/execnet/script/socketserver.py
