@@ -2,6 +2,7 @@ codespeak-lib (0.9.0-4) unstable; urgency=low
 
   * Add myself to Uploaders:
   * Use Homepage: field.
+  * Bump Standards-Version to 3.7.3.
 
  -- Chris Lamb <chris@chris-lamb.co.uk>  Mon, 04 Feb 2008 16:15:21 +0000
 
