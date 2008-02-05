@@ -19,7 +19,7 @@ patch-stamp:
 	dpatch apply-all
 	touch $@
 
-build: build-doc patch build-stamp
+build: patch build-stamp build-doc
 
 build-doc: build-doc-stamp $(MANPAGES)
 	ls $(MANPAGES) > debian/python-codespeak-lib.manpages
@@ -28,9 +28,11 @@ build-doc: build-doc-stamp $(MANPAGES)
 	$(XP) -o $@  $(DB2MAN) $< 
 
 build-doc-stamp: 
-	#./py/bin/py.test --apigen=py/apigen/apigen.py py || true
+	mkdir apigen
+	echo "** This takes a long time, please be patient **"
+	./py/bin/_docgen.py apigen || true
 	echo "py/doc/* usr/share/doc/python-codespeak-lib/py/doc" >> debian/python-codespeak-lib.install
-	#echo "apigen  usr/share/doc/python-codespeak-lib/" >> debian/python-codespeak-lib.install
+	echo "apigen  usr/share/doc/python-codespeak-lib/" >> debian/python-codespeak-lib.install
 	touch $@
 
 build-stamp: $(PYVERS:%=build-python%)
