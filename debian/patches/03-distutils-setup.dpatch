@@ -1,7 +1,6 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## 03-distutils-setup.dpatch by  <alf@merlin>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
 ## DP: Use stdlib's distutils for setup
 
 @DPATCH@

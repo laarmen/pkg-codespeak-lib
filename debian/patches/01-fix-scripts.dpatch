@@ -1,7 +1,6 @@
 #! /bin/sh /usr/share/dpatch/dpatch-run
 ## fix-scripts.dpatch by  <alf@merlin>
 ##
-## All lines beginning with `## DP:' are a description of the patch.
 ## DP: findpy not available in /usr/bin + use /usr/bin/python
 
 @DPATCH@
