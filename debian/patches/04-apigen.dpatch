@@ -32,7 +32,7 @@
 +                continue
 +            else:
 +                raise
-+            
++
          if value[1] == '*':
              d.update(get_star_import_tree(base, key))
          else:

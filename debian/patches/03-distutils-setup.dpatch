@@ -59,4 +59,4 @@
 +setup(packages = packages,
 +      scripts = scripts,
 +      package_data = package_data
-+      )  
++      )
