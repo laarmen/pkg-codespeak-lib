@@ -78,10 +78,9 @@ clean: unpatch
                py/c-extension/greenlet/build \
                apigen
 
-	find . -name "*.pyc" -exec rm -f {} \;
-	find py/doc/ -name "*.html" -exec rm -f {} \;
+	find . -name "*.pyc" | xargs rm -f
+	find py/doc/ -name "*.html" | xargs rm -f
 	dh_clean
-
 
 install: build 
 	dh_testdir
