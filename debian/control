@@ -18,7 +18,14 @@ Suggests: screen, rsync, graphviz, tetex-bin, gs-gpl|gs-esp, ps2eps, subversion
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: The pylib library containing py.test, greenlets and other niceties
- It includes py.test, whose focus is to get a test environment that's easier
- to use than the existing ones, py.xml ("a fast'n'easy way to generate
- xml/html documents"), py.magic.greenlet ("Lightweight in-process concurrent
- programming") and many more features.
+ The Codespeak py lib aims at supporting a decent Python development process
+ addressing deployment, versioning, testing and documentation perspectives. It
+ includes:
+ .
+  * py.test, whose focus is to get a test environment that's easier to use than
+    the existing ones
+  * py.xml, a fast and easy way to generate xml/html documents
+  * py.magic.greenlet, lightweight in-process concurrent programming
+  * py.execnet, ad-hoc code distribution to SSH, Socket and local sub-processes
+  * py.path, path abstractions over local and subversion files
+  * .. and many more features.
