@@ -101,7 +101,7 @@ binary-arch: build install
 	dh_installchangelogs -a
 	dh_installdocs -a
 	dh_installman -a
-	find debian/python-codespeak-lib -name .svn -exec rm -rf {} \; || true
+	find debian/python-codespeak-lib -name .svn | xargs rm -rf {} 
 	dh_installexamples -a
 	dh_strip -a
 	dh_compress -a -X.py
