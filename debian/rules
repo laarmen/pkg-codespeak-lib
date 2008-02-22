@@ -4,7 +4,7 @@
 #export DH_VERBOSE=1
 
 PYVERS	:= $(shell pyversions -r -v)
-#PYVER	:= $(shell pyversions -d -v)
+PYVER	:= $(shell pyversions -d -v)
 
 DEB_BUILD_GNU_TYPE := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_HOST_GNU_TYPE := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
@@ -38,6 +38,9 @@ build-doc-stamp:
 build-stamp: $(PYVERS:%=build-python%)
 	dh_clean -k
 	python setup.py install --no-compile --prefix=debian/python-codespeak-lib/usr/
+	cp -v py/test/rsession/webdata/*.html \
+		py/test/rsession/webdata/*.js \
+		debian/python-codespeak-lib/usr/lib/python$(PYVER)/site-packages/py/test/rsession/webdata/
 	rm -f debian/python-codespeak-lib/usr/lib/python*/site-packages/py/env.py
 	for f in debian/python-codespeak-lib/usr/bin/* ; do \
 	    sed -i -e 's/from \_findpy import py/import py/' $$f ; \
