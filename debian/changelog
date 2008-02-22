@@ -1,3 +1,9 @@
+codespeak-lib (0.9.0-5) unstable; urgency=low
+
+  * Remove python-tkinter from Recommends (Closes: #448894)
+
+ -- Chris Lamb <chris@chris-lamb.co.uk>  Fri, 22 Feb 2008 00:07:33 +0000
+
 codespeak-lib (0.9.0-4) unstable; urgency=low
 
   * Add myself to Uploaders:
