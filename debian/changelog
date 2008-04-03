@@ -8,6 +8,7 @@ codespeak-lib (0.9.1-1) unstable; urgency=low
     Patch by Alexandre Fayolle <afayolle@debian.org> (Closes: #434226).
   * Add debian/watch file.
   * Change doc-base section to "Programming/Python" from "Apps/Programming".
+  * Update Lintian overrides to match new installed directories.
 
  -- Chris Lamb <chris@chris-lamb.co.uk>  Thu, 03 Apr 2008 13:16:40 +0100
 

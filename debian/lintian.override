@@ -1,3 +1,3 @@
-python-codespeak-lib: script-not-executable ./usr/share/pycentral/python-codespeak-lib/site-packages/py/execnet/script/shell.py
-python-codespeak-lib: script-not-executable ./usr/share/pycentral/python-codespeak-lib/site-packages/py/execnet/script/socketserver.py
-python-codespeak-lib: script-not-executable ./usr/share/pycentral/python-codespeak-lib/site-packages/py/misc/findmissingdocstrings.py
+python-codespeak-lib: script-not-executable ./usr/share/pyshared/py/execnet/script/shell.py
+python-codespeak-lib: script-not-executable ./usr/share/pyshared/py/execnet/script/socketserver.py
+python-codespeak-lib: script-not-executable ./usr/share/pyshared/py/misc/findmissingdocstrings.py
