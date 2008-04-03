@@ -36,13 +36,3 @@
          if value[1] == '*':
              d.update(get_star_import_tree(base, key))
          else:
---- codespeak-lib-0.9.0.orig/py/bin/_docgen.py    2007-02-14 11:13:06.000000000 +0000
-+++ codespeak-lib-0.9.0/py/bin/_docgen.py        2008-02-05 11:09:29.000000000 +0000
-@@ -28,7 +28,7 @@
- def build_docs(targetpath, testargs):
-     docpath = pypath.join('doc')
-     run_tests(docpath, '',
--              testargs + ' --forcegen --apigenrelpath="apigen/"')
-+              testargs + ' --forcegen --apigen="%s/apigen/apigen.py"' % (pypath,))
-     docpath.copy(targetpath)
-
