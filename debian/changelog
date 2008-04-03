@@ -1,9 +1,9 @@
 codespeak-lib (0.9.1-1) unstable; urgency=low
 
-  * New upstream release.
-  * Adjust Maintainers: with permission from Guilherme Salgado and Alexandre
+  * New upstream release (Closes: #473528)
+  * Adjust Maintainers with permission from Guilherme Salgado and Alexandre
     Fayolle.
-  * Remove python-tkinter from Recommends (Closes: #448894)
+  * Remove python-tkinter from Recommends (Closes: #448894, #473833)
   * Add texlive-extra-utils to Build-Depends.
   * Install "webdata" HTML and JavaScript files to fix web-based py.test.
     Patch by Alexandre Fayolle <afayolle@debian.org> (Closes: #434226).
