@@ -1,5 +1,7 @@
 codespeak-lib (0.9.0-5) unstable; urgency=low
 
+  * Adjust Maintainers: with permission from Guilherme Salgado and Alexandre
+    Fayolle.
   * Remove python-tkinter from Recommends (Closes: #448894)
   * Install "webdata" HTML and JavaScript files to fix web-based py.test.
     Patch by Alexandre Fayolle <afayolle@debian.org> (Closes: #434226).

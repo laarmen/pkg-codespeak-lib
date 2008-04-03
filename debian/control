@@ -1,8 +1,7 @@
 Source: codespeak-lib
 Section: python
 Priority: optional
-Maintainer: Guilherme Salgado <salgado@async.com.br>
-Uploaders: Alexandre Fayolle <afayolle@debian.org>, Chris Lamb <chris@chris-lamb.co.uk>
+Maintainer: Chris Lamb <chris@chris-lamb.co.uk>
 Build-Depends: python-all-dev (>= 2.3.5-10), python-central (>= 0.5), debhelper (>= 5.0.37.1), dpatch, python-docutils, xsltproc, docbook-xsl, subversion, openssh-client
 XS-Python-Version: all
 Standards-Version: 3.7.3
