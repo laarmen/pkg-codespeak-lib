@@ -2,3 +2,4 @@
 02-py-test-path
 03-distutils-setup
 04-apigen
+05-disable-buildcmodule

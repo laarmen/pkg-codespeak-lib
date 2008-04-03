@@ -5,6 +5,8 @@ codespeak-lib (0.9.1-1) unstable; urgency=low
     Fayolle.
   * Remove '/usr/bin' from path when executing py.test to prevent collision
     with pypy-dev (Closes: #463568).
+  * Disable buildcmodule.py from deleting greenlet module /usr/lib. Thanks to
+    Mark Wooding <mdw@distorted.org.uk> (Closes: #471844).
   * Remove python-tkinter from Recommends (Closes: #448894, #473833)
   * Add texlive-extra-utils to Build-Depends.
   * Install "webdata" HTML and JavaScript files to fix web-based py.test.
