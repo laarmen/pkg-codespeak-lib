@@ -1,12 +1,13 @@
-codespeak-lib (0.9.0-5) unstable; urgency=low
+codespeak-lib (0.9.1-1) unstable; urgency=low
 
+  * New upstream release.
   * Adjust Maintainers: with permission from Guilherme Salgado and Alexandre
     Fayolle.
   * Remove python-tkinter from Recommends (Closes: #448894)
   * Install "webdata" HTML and JavaScript files to fix web-based py.test.
     Patch by Alexandre Fayolle <afayolle@debian.org> (Closes: #434226).
 
- -- Chris Lamb <chris@chris-lamb.co.uk>  Fri, 22 Feb 2008 00:07:33 +0000
+ -- Chris Lamb <chris@chris-lamb.co.uk>  Thu, 03 Apr 2008 13:16:40 +0100
 
 codespeak-lib (0.9.0-4) unstable; urgency=low
 
