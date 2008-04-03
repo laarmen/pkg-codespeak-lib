@@ -10,7 +10,7 @@
          if wc.check(versioned=True):
              rev = py.path.svnwc(packageroot).info().rev
 +        else:
-+            rev = py.__package__.revision
++            rev = 'unknown'
          _revcache[packageroot] = rev
      if packageroot.basename == "py": 
          assert rev is not None
