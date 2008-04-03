@@ -1,6 +1,8 @@
 codespeak-lib (0.9.1-1) unstable; urgency=low
 
   * New upstream release (Closes: #473528)
+     - Documentation is now installed with sensible filenames (Closes:
+     #413665)
   * Adjust Maintainers with permission from Guilherme Salgado and Alexandre
     Fayolle.
   * Remove '/usr/bin' from path when executing py.test to prevent collision
