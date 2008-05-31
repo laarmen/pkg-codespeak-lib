@@ -3,6 +3,8 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
+include /usr/share/dpatch/dpatch.make
+
 PYVERS	:= $(shell pyversions -r -v)
 PYVER	:= $(shell pyversions -d -v)
 
@@ -14,20 +16,15 @@ XP=xsltproc -''-nonet
 DOCBOOK_MANPAGES=$(wildcard debian/*.xml)
 MANPAGES=$(patsubst %.xml,%.1, $(DOCBOOK_MANPAGES))
 
-patch: patch-stamp
-patch-stamp:
-	dpatch apply-all
-	touch $@
-
-build: patch build-stamp build-doc
+build: $(DPATCH_STAMPFN) build-stamp build-doc
 
 build-doc: build-doc-stamp $(MANPAGES)
 	ls $(MANPAGES) > debian/python-codespeak-lib.manpages
 
 %.1: %.xml
-	$(XP) -o $@  $(DB2MAN) $< 
+	$(XP) -o $@ $(DB2MAN) $<
 
-build-doc-stamp: 
+build-doc-stamp:
 	mkdir apigen
 	echo "** This takes a long time, please be patient **"
 	./py/bin/_docgen.py apigen || true
@@ -58,20 +55,16 @@ build-python%:
 	fi
 	touch $@
 
-unpatch:
-	dpatch deapply-all
-	rm -rf patch-stamp debian/patched
-
 clean: unpatch
 	dh_testdir
 	dh_testroot
-	rm -f *-stamp 
-	rm -rf build 
-	rm -rf build-python* 
-	rm -f debian/python-codespeak-lib.install 
-	rm -f debian/python-codespeak-lib.docs 
+	rm -f *-stamp
+	rm -rf build
+	rm -rf build-python*
+	rm -f debian/python-codespeak-lib.install
+	rm -f debian/python-codespeak-lib.docs
 	rm -f debian/python-codespeak-lib.manpages
-	rm -f  $(MANPAGES) 
+	rm -f  $(MANPAGES)
 	rm -rf py/c-extension/greenlet/greenlet.so \
                py/rest/testing/data/*.png \
                py/rest/testing/data/*.pdf \
@@ -85,7 +78,7 @@ clean: unpatch
 	find py/doc/ -name "*.html" | xargs rm -f
 	dh_clean
 
-install: build 
+install: build
 	dh_testdir
 	dh_testroot
 	dh_installdirs usr/share/lintian/overrides/
@@ -104,7 +97,7 @@ binary-arch: build install
 	dh_installchangelogs -a
 	dh_installdocs -a
 	dh_installman -a
-	find debian/python-codespeak-lib -name .svn | xargs rm -rf {} 
+	find debian/python-codespeak-lib -name .svn -print0 | xargs -0 rm -rf
 	dh_installexamples -a
 	dh_strip -a
 	dh_compress -a -X.py
