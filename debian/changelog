@@ -1,6 +1,7 @@
 codespeak-lib (0.9.1-2) unstable; urgency=low
 
   * Tidy debian/rules.
+  * Don't install /usr/share/pyshared/UNKNOWN-0.0.0.egg-info (Closes: #476606)
 
  -- Chris Lamb <chris@chris-lamb.co.uk>  Sat, 31 May 2008 15:11:06 +0100
 

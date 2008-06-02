@@ -86,6 +86,7 @@ install: build
 	cp debian/lintian.override debian/python-codespeak-lib/usr/share/lintian/overrides/python-codespeak-lib
 	chmod 644 debian/python-codespeak-lib/usr/lib/python*/site-packages/py/execnet/script/shell.py
 	rm -f debian/python-codespeak-lib/usr/share/doc/python-codespeak-lib/__init__.py
+	find -type f -name "UNKNOWN*.egg-info" | xargs rm -f
 
 # Build architecture independant packages using the common target.
 binary-indep: build install
