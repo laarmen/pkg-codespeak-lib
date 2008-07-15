@@ -3,3 +3,4 @@
 03-distutils-setup
 04-apigen
 05-disable-buildcmodule
+06-subversion-looping.dpatch
