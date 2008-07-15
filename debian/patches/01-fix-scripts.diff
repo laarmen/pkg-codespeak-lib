@@ -1,9 +1,6 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## fix-scripts.dpatch by  <alf@merlin>
-##
-## DP: findpy not available in /usr/bin + use /usr/bin/python
+ 01-fix-scripts.diff
 
-@DPATCH@
+ findpy not available in /usr/bin + use /usr/bin/python. Patch by <alf@merlin>.
 
 --- codespeak-lib-0.7-svn20061228.orig/py/misc/cmdline/countloc.py      2006-12-28 14:14:32.000000000 +0100
 +++ codespeak-lib-0.7-svn20061228/py/misc/cmdline/countloc.py   2007-01-05 17:23:04.000000000 +0100

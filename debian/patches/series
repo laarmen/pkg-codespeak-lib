@@ -1,0 +1,6 @@
+01-fix-scripts.diff
+02-py-test-path.diff
+03-distutils-setup.diff
+04-apigen.diff
+05-disable-buildcmodule.diff
+06-subversion-looping.diff

@@ -1,7 +1,4 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 04-apigen.dpatch
-
-@DPATCH@
+ 04-apigen.dpatch
 
 --- codespeak-lib-0.9.0.orig/py/apigen/htmlgen.py
 +++ codespeak-lib-0.9.0/py/apigen/htmlgen.py

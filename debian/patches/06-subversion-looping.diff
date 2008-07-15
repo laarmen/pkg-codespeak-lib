@@ -1,15 +1,13 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 06-subversion-looping.dpatch by Chris Lamb <chris@chris-lamb.co.uk>
-##
-## DP: "ls -v" in Subversion >= 1.5 lists ".", which was causing some
-## DP: operations to loop infinitely. See #489102 and
-## DP: https://codespeak.net/issue/py-dev/issue56. Patch by Chris Lamb
-## DP: <chris@chris-lamb.co.uk>.
+ 06-subversion-looping.diff
 
-@DPATCH@
+ "svn ls -v" under Subversion >= 1.5 lists ".", which was causing some
+ operations to loop infinitely. See #489102 and
+ https://codespeak.net/issue/py-dev/issue56. Patch by Chris Lamb
+ <chris@chris-lamb.co.uk>.
+
 diff -urNad py/path/svn/urlcommand.py codespeak-lib-0.9.1/py/path/svn/urlcommand.py
---- py/path/svn/urlcommand.py	2008-07-12 03:02:11.000000000 +0100
-+++ py/path/svn/urlcommand.py	2008-07-12 03:03:23.000000000 +0100
+--- a/py/path/svn/urlcommand.py	2008-07-12 03:02:11.000000000 +0100
++++ b/py/path/svn/urlcommand.py	2008-07-12 03:03:23.000000000 +0100
 @@ -239,7 +239,8 @@
              for lsline in lines:
                  if lsline:

@@ -1,10 +1,8 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## 02-py-test-path.dpatch by Chris Lamb <chris@chris-lamb.co.uk>
-##
-## DP: Workaround Python module path conflict when pypy-dev is
-## DP: installed. See #463568.
+ 02-py-test-path.diff
 
-@DPATCH@
+ Workaround Python module path conflict when pypy-dev is
+ installed. See #463568. Patch by Chris Lamb <chris@chris-lamb.co.uk>.
+
 diff -urNad py-0.9.1~/py/bin/py.test py-0.9.1/py/bin/py.test
 --- py-0.9.1~/py/bin/py.test	2008-03-28 10:40:40.000000000 +0000
 +++ py-0.9.1/py/bin/py.test	2008-04-03 23:59:12.000000000 +0100

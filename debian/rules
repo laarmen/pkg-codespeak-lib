@@ -3,7 +3,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-include /usr/share/dpatch/dpatch.make
+include /usr/share/quilt/quilt.make
 
 PYVERS	:= $(shell pyversions -r -v)
 PYVER	:= $(shell pyversions -d -v)
@@ -16,7 +16,7 @@ XP=xsltproc -''-nonet
 DOCBOOK_MANPAGES=$(wildcard debian/*.xml)
 MANPAGES=$(patsubst %.xml,%.1, $(DOCBOOK_MANPAGES))
 
-build: $(DPATCH_STAMPFN) build-stamp build-doc
+build: $(QUILT_STAMPFN) build-stamp build-doc
 
 build-doc: build-doc-stamp $(MANPAGES)
 	ls $(MANPAGES) > debian/python-codespeak-lib.manpages
