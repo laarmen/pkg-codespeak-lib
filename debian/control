@@ -9,11 +9,11 @@ Homepage: http://codespeak.net/py/
 
 Package: python-codespeak-lib
 Architecture: any
-Depends: ${python:Depends}, ${shlibs:Depends}
+Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Conflicts: python-pylib, python2.3-codespeak-lib, python2.4-codespeak-lib
 Replaces: python-pylib, python2.3-codespeak-lib, python2.4-codespeak-lib
 Recommends: python-docutils
-Suggests: screen, rsync, graphviz, tetex-bin, gs-gpl|gs-esp, ps2eps, subversion
+Suggests: screen, rsync, graphviz, texlive, ghostscript, ps2eps, subversion
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: The pylib library containing py.test, greenlets and other niceties
