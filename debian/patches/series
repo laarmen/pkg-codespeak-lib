@@ -4,3 +4,4 @@
 04-apigen.diff
 05-disable-buildcmodule.diff
 06-subversion-looping.diff
+07-verbose-apigen.diff
