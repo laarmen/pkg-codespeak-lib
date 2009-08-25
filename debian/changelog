@@ -8,6 +8,7 @@ codespeak-lib (1.0.1-1) UNRELEASED; urgency=low
       version.
     - Move Docbook manpages under debian/manpages/
     - Drop ancient Replaces, etc.
+  * Add manpages for py.which and py.svnwcrevert.
   * Update package short and long descriptions.
   * New maintainer email address.
   * Bump Standards-Version to 3.8.3.
