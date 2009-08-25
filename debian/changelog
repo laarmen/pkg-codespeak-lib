@@ -2,6 +2,7 @@ codespeak-lib (1.0.1-1) UNRELEASED; urgency=low
 
   * New upstream release. (Closes: #541437)
   * New maintainer email address.
+  * Bump Standards-Version to 3.8.3.
 
  -- Chris Lamb <lamby@debian.org>  Tue, 25 Aug 2009 02:10:19 +0100
 
