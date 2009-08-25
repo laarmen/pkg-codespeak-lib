@@ -1,10 +1,17 @@
 codespeak-lib (1.0.1-1) UNRELEASED; urgency=low
 
   * New upstream release. (Closes: #541437)
+  * Vastly simplify packaging:
+    - Package is now architecture independent
+    - Move to debhelper 7
+    - Drop entire patch series; applied upstream or not applicable to this
+      version.
+    - Move Docbook manpages under debian/manpages/
+    - Drop ancient Replaces, etc.
+  * Update package short and long descriptions.
   * New maintainer email address.
   * Bump Standards-Version to 3.8.3.
   * Fix new upstream tarball location in debian/watch.
-  * Move to debhelper 7.
 
  -- Chris Lamb <lamby@debian.org>  Tue, 25 Aug 2009 02:10:19 +0100
 

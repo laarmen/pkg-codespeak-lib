@@ -2,29 +2,21 @@ Source: codespeak-lib
 Section: python
 Priority: optional
 Maintainer: Chris Lamb <lamby@debian.org>
-Build-Depends: debhelper (>= 7.0.50~), python-all-dev (>= 2.3.5-10), python-central (>= 0.5), quilt, python-docutils, xsltproc, docbook-xsl, subversion, openssh-client, texlive-extra-utils
-XS-Python-Version: all
+Build-Depends: debhelper (>= 7.0.50~), python-support, python-setuptools, xsltproc, docbook-xsl
 Standards-Version: 3.8.3
 Homepage: http://codespeak.net/py/
 
 Package: python-codespeak-lib
-Architecture: any
-Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
-Conflicts: python-pylib, python2.3-codespeak-lib, python2.4-codespeak-lib
-Replaces: python-pylib, python2.3-codespeak-lib, python2.4-codespeak-lib
-Recommends: python-docutils
-Suggests: screen, rsync, graphviz, texlive, ghostscript, ps2eps, subversion
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}
 Provides: ${python:Provides}
-XB-Python-Version: ${python:Versions}
-Description: The pylib library containing py.test, greenlets and other niceties
+Suggests: screen, rsync, graphviz, texlive, ghostscript, ps2eps, subversion
+Description: Advanced Python testing tool and networking lib
  The Codespeak py lib aims at supporting a decent Python development process
  addressing deployment, versioning, testing and documentation perspectives. It
  includes:
  .
-  * py.test, whose focus is to get a test environment that's easier to use than
-    the existing ones
-  * py.xml, a fast and easy way to generate xml/html documents
-  * py.magic.greenlet, lightweight in-process concurrent programming
-  * py.execnet, ad-hoc code distribution to SSH, Socket and local sub-processes
-  * py.path, path abstractions over local and subversion files
-  * .. and many more features.
+  * py.test: cross-project testing tool with many advanced features
+  * py.execnet: ad-hoc code distribution to SSH, Socket and local sub processes
+  * py.path: path abstractions over local and subversion files
+  * py.code: dynamic code compile and traceback printing support

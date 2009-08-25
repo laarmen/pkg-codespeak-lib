@@ -1,112 +1,17 @@
 #!/usr/bin/make -f
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
-
-include /usr/share/quilt/quilt.make
-
-PYVERS	:= $(shell pyversions -r -v)
-PYVER	:= $(shell pyversions -d -v)
-
-DEB_BUILD_GNU_TYPE := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-DEB_HOST_GNU_TYPE := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-DB2MAN=/usr/share/sgml/docbook/stylesheet/xsl/nwalsh/manpages/docbook.xsl
-XP=xsltproc -''-nonet
-
-DOCBOOK_MANPAGES=$(wildcard debian/*.xml)
+DOCBOOK_MANPAGES=$(wildcard debian/manpages/*.xml)
 MANPAGES=$(patsubst %.xml,%.1, $(DOCBOOK_MANPAGES))
 
-build: $(QUILT_STAMPFN) build-stamp build-doc
-
-build-doc: build-doc-stamp $(MANPAGES)
-	ls $(MANPAGES) > debian/python-codespeak-lib.manpages
+%:
+	dh $@
 
 %.1: %.xml
-	$(XP) -o $@ $(DB2MAN) $<
+	xsltproc -''-nonet -o $@ /usr/share/sgml/docbook/stylesheet/xsl/nwalsh/manpages/docbook.xsl $<
 
-build-doc-stamp:
-	mkdir apigen
-	echo "** This takes a long time, please be patient **"
-	./py/bin/_docgen.py apigen || true
-	echo "py/doc/* usr/share/doc/python-codespeak-lib/py/doc" >> debian/python-codespeak-lib.install
-	echo "apigen  usr/share/doc/python-codespeak-lib/" >> debian/python-codespeak-lib.install
-	touch $@
+override_dh_auto_build: $(MANPAGES)
+	dh_auto_build
 
-build-stamp: $(PYVERS:%=build-python%)
-	dh_clean -k
-	python setup.py install --no-compile --prefix=debian/python-codespeak-lib/usr/
-	cp -v py/test/rsession/webdata/*.html \
-		py/test/rsession/webdata/*.js \
-		debian/python-codespeak-lib/usr/lib/python$(PYVER)/site-packages/py/test/rsession/webdata/
-	rm -f debian/python-codespeak-lib/usr/lib/python*/site-packages/py/env.py
-	for f in debian/python-codespeak-lib/usr/bin/* ; do \
-	    sed -i -e 's/from \_findpy import py/import py/' $$f ; \
-	done
-	touch $@
-
-build-python%:
-	if cd py/c-extension/greenlet/ && python$* setup.py build ; \
-	then \
-		cd - ; \
-		echo "successful build of C extension" ; \
-		echo "py/c-extension/greenlet/build/lib*$*/greenlet.so usr/lib/python$*/site-packages/py/c-extension/greenlet" >> debian/python-codespeak-lib.install ;\
-	else \
-		echo "greenlet unavailable for this architecture" ; \
-	fi
-	touch $@
-
-clean: unpatch
-	dh_testdir
-	dh_testroot
-	rm -f *-stamp
-	rm -rf build
-	rm -rf build-python*
-	rm -f debian/python-codespeak-lib.install
-	rm -f debian/python-codespeak-lib.docs
-	rm -f debian/python-codespeak-lib.manpages
-	rm -f  $(MANPAGES)
-	rm -rf py/c-extension/greenlet/greenlet.so \
-               py/rest/testing/data/*.png \
-               py/rest/testing/data/*.pdf \
-               py/rest/testing/data/*.toc \
-               py/rest/testing/data/*.html \
-               py/rest/testing/data/img \
-               py/c-extension/greenlet/build \
-               apigen
-
-	find . -name "*.pyc" | xargs rm -f
-	find py/doc/ -name "*.html" | xargs rm -f
-	dh_clean
-
-install: build
-	dh_testdir
-	dh_testroot
-	dh_install -a
-	chmod 644 debian/python-codespeak-lib/usr/lib/python*/site-packages/py/execnet/script/shell.py
-	rm -f debian/python-codespeak-lib/usr/share/doc/python-codespeak-lib/__init__.py
-	find -type f -name "UNKNOWN*.egg-info" | xargs rm -f
-
-# Build architecture independant packages using the common target.
-binary-indep: build install
-
-# Build architecture dependant packages using the common target.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs -a
-	dh_installdocs -a
-	dh_installman -a
-	find debian/python-codespeak-lib -name .svn -print0 | xargs -0 rm -rf
-	dh_installexamples -a
-	dh_strip -a
-	dh_compress -a -X.py
-	dh_fixperms -a
-	dh_pycentral -a
-	dh_installdeb -a
-	dh_shlibdeps -a
-	dh_gencontrol -a
-	dh_md5sums -a
-	dh_builddeb -a
-
-binary: binary-arch binary-indep
-.PHONY: build clean binary-indep binary-arch binary install unpatch
+override_dh_auto_clean:
+	rm -f debian/manpages/*.1
+	dh_auto_clean
