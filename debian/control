@@ -1,7 +1,7 @@
 Source: codespeak-lib
 Section: python
 Priority: optional
-Maintainer: Chris Lamb <chris@chris-lamb.co.uk>
+Maintainer: Chris Lamb <lamby@debian.org>
 Build-Depends: python-all-dev (>= 2.3.5-10), python-central (>= 0.5), debhelper (>= 5.0.37.1), quilt, python-docutils, xsltproc, docbook-xsl, subversion, openssh-client, texlive-extra-utils
 XS-Python-Version: all
 Standards-Version: 3.8.0
