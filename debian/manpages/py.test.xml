@@ -105,178 +105,212 @@ and docbook-xsl in your Build-Depends control field.
       options is included below. </para>
 
     <variablelist>
-      <varlistentry>
-        <term><option>-h</option>
-          <option>--help</option>
-        </term>
-        <listitem>
-          <para>Show summary of options and exit.</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-v</option>
-          <option>--verbose</option>
-        </term>
-        <listitem>
-          <para>Increase verbosity.</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-x</option>
-          <option>--exitfirst</option>
-        </term>
-        <listitem>
-          <para>Exit on first error or failed test.</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-s</option>
-          <option>--nocapture</option>
-        </term>
-        <listitem>
-          <para>Disable catching of sys.stdout/stderr output.</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-k KEYWORD</option>
-        </term>
-        <listitem>
-          <para>only run tests matching the given keyword expression </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-l</option>
-          <option>--showlocals</option>
-        </term>
-        <listitem>
-          <para>Show local variables in traceback (disabled by default) </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--pdb</option>
-        </term>
-        <listitem>
-          <para>Start the python debugger on errors </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--tb=TBSTYLE</option>
-        </term>
-        <listitem>
-          <para>set the traceback style. TBSTYLE can be 'long', 'short' or 'no') </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--fulltrace</option>
-        </term>
-        <listitem>
-          <para>Do not cut tracebacks (default behavior is to cut) </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--nomagic</option>
-        </term>
-        <listitem>
-          <para>Refrain from using magic as much as possible </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--collectonly</option>
-        </term>
-        <listitem>
-          <para>Only collect tests, don't execute them </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>
-          <option>--traceconfig</option>
-        </term>
-        <listitem>
-          <para>Trace consideration of conftest.py files </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>--apigen</option>
-        </term>
-        <listitem>
-          <para>Generate api documentation while testing (requires initpkg/conftest config). </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>
-          <option>--tkinter</option>
-        </term>
-        <listitem>
-          <para>use tkinter test session frontend (requires python-tkinter). </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>
-          <option>--looponfailing</option>
-        </term>
-        <listitem>
-          <para>Loop on failing tests </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>
-          <option>--session=SESSION</option>
-        </term>
-        <listitem>
-          <para>Use the given session class. Default is 'terminal'. </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>
-          <option>--exec</option>
-        </term>
-        <listitem>
-          <para>python executable with which the tests should be run</para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-w</option>
-          <option>--startserver</option>
-        </term>
-        <listitem>
-          <para>Start an HTTP server on localhost:8000 for test. </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term>
-          <option>--runbrowser</option>
-        </term>
-        <listitem>
-          <para>Point your browser to the server started with --startserver </para>
-        </listitem>
-      </varlistentry>
-
-      <varlistentry>
-        <term><option>-r</option>
-          <option>--rest</option>
-        </term>
-        <listitem>
-          <para>Restructured Text test result output. </para>
-        </listitem>
-      </varlistentry>
+        <varlistentry>
+          <term>
+           <option>-l</option>
+           <option>--showlocals</option>
+          </term>
+          <listitem>
+            <para>show locals in tracebacks (disabled by default).</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--tb=style</option>
+          </term>
+          <listitem>
+            <para>traceback verboseness (long/short/no).</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>-p</option>
+          </term>
+          <listitem>
+            <para>LUGINS        load the specified plugin after command line parsing.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>-f</option>
+           <option>--looponfail</option>
+          </term>
+          <listitem>
+            <para>run tests, re-run failing test set until all pass.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--boxed</option>
+          </term>
+          <listitem>
+            <para>box each test run in a separate process</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>-s</option>
+          </term>
+          <listitem>
+            <para>shortcut for --capture=no.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--capture=method</option>
+          </term>
+          <listitem>
+            <para>set capturing method during tests: fd (default)|sys|no.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--pdb</option>
+          </term>
+          <listitem>
+            <para>start pdb (the Python debugger) on errors.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--pastebin=mode</option>
+          </term>
+          <listitem>
+            <para>send failed|all info to Pocoo pastebin service.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--basetemp=dir</option>
+          </term>
+          <listitem>
+            <para>base temporary directory for this test run.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--collectonly</option>
+          </term>
+          <listitem>
+            <para>only collect tests, don't execute them.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--traceconfig</option>
+          </term>
+          <listitem>
+            <para>trace considerations of conftest.py files.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--nomagic</option>
+          </term>
+          <listitem>
+            <para>don't reinterpret asserts, no traceback cutting.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--fulltrace</option>
+          </term>
+          <listitem>
+            <para>don't cut any tracebacks (default is to cut).</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--debug</option>
+          </term>
+          <listitem>
+            <para>generate and show debugging information.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--help-config</option>
+          </term>
+          <listitem>
+            <para>show available conftest.py and ENV-variable names.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--version</option>
+          </term>
+          <listitem>
+            <para>display py lib version and import information.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--dist=distmode</option>
+          </term>
+          <listitem>
+            <para>set mode for distributing tests to exec environments.
+                         each: send each test to each available environment.
+                         load: send each test to available environment.
+                         (default) no: run tests inprocess, don't distribute.
+            </para>
+         </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--tx=xspec</option>
+          </term>
+          <listitem>
+            <para>add a test execution environment. some examples: --tx
+                         popen//python=python2.5 --tx socket=192.168.1.102:8888
+                         --tx ssh=user@codespeak.net//chdir=testcache
+            </para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>-d</option>
+          </term>
+          <listitem>
+            <para>load-balance tests.  shortcut for '--dist=load'</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>-n numprocesses</option>
+          </term>
+          <listitem>
+            <para>shortcut for '--dist=load --tx=NUM*popen'</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--rsyncdir=dir1</option>
+          </term>
+          <listitem>
+            <para>add directory for rsyncing to remote tx nodes.</para>
+          </listitem>
+        </varlistentry>
 
     </variablelist>
   </refsect1>
