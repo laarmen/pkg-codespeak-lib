@@ -1,8 +1,8 @@
 codespeak-lib (1.0.2-1) UNRELEASED; urgency=low
 
   * New upstream release.
-  * Fix "#!/usr/bin/python2.4" shebangs by rebuilding with new Debhelper.
-    (Closes: #549374)
+  * Rebuild with newer debhelper. (Closes: #549374, #549675)
+  * Clean extra LICENSE file to silence Lintian.
 
  -- Chris Lamb <lamby@debian.org>  Mon, 05 Oct 2009 16:46:22 +0100
 
