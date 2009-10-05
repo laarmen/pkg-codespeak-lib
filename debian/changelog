@@ -1,10 +1,10 @@
-codespeak-lib (1.0.2-1) UNRELEASED; urgency=low
+codespeak-lib (1.0.2-1) unstable; urgency=low
 
   * New upstream release.
   * Rebuild with newer debhelper. (Closes: #549374, #549675)
   * Clean extra LICENSE file to silence Lintian.
 
- -- Chris Lamb <lamby@debian.org>  Mon, 05 Oct 2009 16:46:22 +0100
+ -- Chris Lamb <lamby@debian.org>  Mon, 05 Oct 2009 17:35:57 +0100
 
 codespeak-lib (1.0.1-2) unstable; urgency=low
 
