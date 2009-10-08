@@ -10,7 +10,7 @@ Vcs-Browser: http://git.chris-lamb.co.uk/?p=debian/pkg-codespeak-lib.git
 
 Package: python-codespeak-lib
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python:Depends}, python-pkg-resources
 Provides: ${python:Provides}
 Suggests: screen, rsync, graphviz, texlive, ghostscript, ps2eps, subversion
 Description: Advanced Python testing tool and networking lib
