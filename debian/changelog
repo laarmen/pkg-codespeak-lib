@@ -3,6 +3,7 @@ codespeak-lib (1.1.1-1) UNRELEASED; urgency=low
   * New upstream release.
   * Update manpages:
     - Remove py.rest manpage.
+    - Add py.convert_unittest manpage.
 
  -- Chris Lamb <lamby@debian.org>  Mon, 30 Nov 2009 23:46:11 +0000
 
