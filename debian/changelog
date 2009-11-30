@@ -1,6 +1,7 @@
 codespeak-lib (1.1.1-1) UNRELEASED; urgency=low
 
   * New upstream release.
+    - Embedded code copies removed upstream (Closes: #555420)
   * Update manpages:
     - Remove py.rest manpage.
     - Add py.convert_unittest manpage.
