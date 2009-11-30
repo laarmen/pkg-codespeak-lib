@@ -1,3 +1,9 @@
+codespeak-lib (1.1.1-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 30 Nov 2009 23:46:11 +0000
+
 codespeak-lib (1.0.2-2) unstable; urgency=low
 
   * Add missing dependency on python-pkg-resources (Closes: #550066)
