@@ -1,4 +1,4 @@
-codespeak-lib (1.1.1-1) UNRELEASED; urgency=low
+codespeak-lib (1.1.1-1) unstable; urgency=low
 
   * New upstream release.
     - Embedded code copies removed upstream (Closes: #555420)
@@ -6,7 +6,7 @@ codespeak-lib (1.1.1-1) UNRELEASED; urgency=low
     - Remove py.rest manpage.
     - Add py.convert_unittest manpage.
 
- -- Chris Lamb <lamby@debian.org>  Mon, 30 Nov 2009 23:46:11 +0000
+ -- Chris Lamb <lamby@debian.org>  Mon, 30 Nov 2009 23:56:02 +0000
 
 codespeak-lib (1.0.2-2) unstable; urgency=low
 
