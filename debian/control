@@ -19,6 +19,5 @@ Description: Advanced Python testing tool and networking lib
  includes:
  .
   * py.test: cross-project testing tool with many advanced features
-  * py.execnet: ad-hoc code distribution to SSH, Socket and local sub processes
   * py.path: path abstractions over local and Subversion files
   * py.code: dynamic code compile and traceback printing support
