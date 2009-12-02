@@ -5,9 +5,8 @@ Dependencies
 ============
 
 To use some functionnalities, you will need to install some Recommended packages:
- * py.test --tkinter: python-tkinter
+ * py.test --tkinter: python-tk
  * py.test remote session support: screen, rsync
- * py.rest pdf support: graphviz, tetex-bin, gs-esp or gs-gpl, ps2eps
 
 
 Greenlet support
