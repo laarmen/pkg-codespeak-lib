@@ -1,9 +1,9 @@
-codespeak-lib (1.1.1-2) UNRELEASED; urgency=low
+codespeak-lib (1.1.1-2) unstable; urgency=low
 
   * Drop reference to py.execnet - not in codespeak-lib package anymore.
     (Closes: #559042)
 
- -- Chris Lamb <lamby@debian.org>  Wed, 02 Dec 2009 00:20:24 +0000
+ -- Chris Lamb <lamby@debian.org>  Wed, 02 Dec 2009 00:20:57 +0000
 
 codespeak-lib (1.1.1-1) unstable; urgency=low
 
