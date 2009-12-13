@@ -13,7 +13,7 @@ override_dh_auto_build: $(MANPAGES)
 	dh_auto_build
 
 override_dh_auto_clean:
-	rm -f debian/manpages/*.1
+	rm -f debian/manpages/*.1 py.egg-info/SOURCES.txt
 	dh_auto_clean
 
 override_dh_pysupport:
