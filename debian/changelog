@@ -1,4 +1,4 @@
-codespeak-lib (1.1.1-3) UNRELEASED; urgency=low
+codespeak-lib (1.1.1-3) unstable; urgency=low
 
   * Update README.Debian to reflect new package names. Thanks to Adam
     Schmalhofer <Adam.Schmalhofer@gmx.de>. (Closes: #559042)
@@ -7,7 +7,7 @@ codespeak-lib (1.1.1-3) UNRELEASED; urgency=low
   * Tidy Suggests: after upstream removed functionality.
   * Add python-execnet to Suggests.
 
- -- Chris Lamb <lamby@debian.org>  Wed, 02 Dec 2009 11:14:58 +0000
+ -- Chris Lamb <lamby@debian.org>  Sun, 13 Dec 2009 21:31:48 +0000
 
 codespeak-lib (1.1.1-2) unstable; urgency=low
 
