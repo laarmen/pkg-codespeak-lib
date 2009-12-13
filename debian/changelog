@@ -1,7 +1,7 @@
 codespeak-lib (1.1.1-3) UNRELEASED; urgency=low
 
-  * Update README.Debian to reflect new package names. Thanks to Adam Schmalhofer
-    <Adam.Schmalhofer@gmx.de>. (Closes: #559042)
+  * Update README.Debian to reflect new package names. Thanks to Adam
+    Schmalhofer <Adam.Schmalhofer@gmx.de>. (Closes: #559042)
   * Also clean py.egg-info/SOURCES.txt to prevent .diff.gz changing on rebuild.
     Thanks to Adam Schmalhofer <Adam.Schmalhofer@gmx.de>.
   * Tidy Suggests: after upstream removed functionality.
