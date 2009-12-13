@@ -12,7 +12,7 @@ Package: python-codespeak-lib
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}, python-pkg-resources
 Provides: ${python:Provides}
-Suggests: screen, rsync, graphviz, texlive, ghostscript, ps2eps, subversion
+Suggests: subversion
 Description: Advanced Python testing tool and networking lib
  The Codespeak py lib aims at supporting a decent Python development process
  addressing deployment, versioning, testing and documentation perspectives. It
