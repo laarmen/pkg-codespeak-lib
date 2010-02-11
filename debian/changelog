@@ -1,6 +1,7 @@
 codespeak-lib (1.2.1-1) UNRELEASED; urgency=low
 
   * New upstream release.
+    - Don't install the (eg.) py.which-2.{4,5} executables
   * Bump Standards-Version to 3.8.3.
 
  -- Chris Lamb <lamby@debian.org>  Thu, 11 Feb 2010 14:15:28 +0000
