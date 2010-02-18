@@ -1,3 +1,9 @@
+codespeak-lib (1.2.1-2) UNRELEASED; urgency=low
+
+  * Rebuild for Python 2.6 support (Closes: #569825)
+
+ -- Chris Lamb <lamby@debian.org>  Thu, 18 Feb 2010 23:45:31 +0000
+
 codespeak-lib (1.2.1-1) unstable; urgency=low
 
   * New upstream release.
