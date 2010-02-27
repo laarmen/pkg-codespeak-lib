@@ -30,7 +30,7 @@ and docbook-xsl in your Build-Depends control field.
   <!ENTITY dhfirstname "<firstname>Alexandre</firstname>">
   <!ENTITY dhsurname   "<surname>Fayolle</surname>">
   <!-- Please adjust the date whenever revising the manpage. -->
-  <!ENTITY dhdate      "<date>jan.  8, 2007</date>">
+  <!ENTITY dhdate      "<date>feb. 25, 2010</date>">
   <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
        allowed: see man(7), man(1). -->
   <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
@@ -102,62 +102,40 @@ and docbook-xsl in your Build-Depends control field.
 
     <para>These programs follow the usual &gnu; command line syntax,
       with long options starting with two dashes (`-').  A summary of
-      options is included below. </para>
+      options is included below. This list may however be incomplete as test
+      suits and aditional plugins can add more options.
+    </para>
 
-    <variablelist>
         <varlistentry>
           <term>
-           <option>-l</option>
-           <option>--showlocals</option>
+           <option>-h</option>
+           <option>--help</option>
           </term>
           <listitem>
-            <para>show locals in tracebacks (disabled by default).</para>
+            <para>Displays a help message including all the available options.
+            </para>
           </listitem>
         </varlistentry>
        
         <varlistentry>
           <term>
-           <option>--tb=style</option>
+            <option>-x</option>
+            <option>--exitfirst</option>
           </term>
           <listitem>
-            <para>traceback verboseness (long/short/no).</para>
+            <para>exit instantly on first error or failed test.</para>
           </listitem>
         </varlistentry>
-       
+
         <varlistentry>
           <term>
-           <option>-p</option>
+            <option>-k KEYWORD</option>
           </term>
           <listitem>
-            <para>LUGINS        load the specified plugin after command line parsing.</para>
-          </listitem>
-        </varlistentry>
-       
-        <varlistentry>
-          <term>
-           <option>-f</option>
-           <option>--looponfail</option>
-          </term>
-          <listitem>
-            <para>run tests, re-run failing test set until all pass.</para>
-          </listitem>
-        </varlistentry>
-       
-        <varlistentry>
-          <term>
-           <option>--boxed</option>
-          </term>
-          <listitem>
-            <para>box each test run in a separate process</para>
-          </listitem>
-        </varlistentry>
-       
-        <varlistentry>
-          <term>
-           <option>-s</option>
-          </term>
-          <listitem>
-            <para>shortcut for --capture=no.</para>
+            <para>only run test items matching the given space separated
+            keywords.  precede a keyword with '-' to negate. Terminate
+            the expression with ':' to treat a match as a signal to run
+            all subsequent tests.</para>
           </listitem>
         </varlistentry>
        
@@ -172,13 +150,79 @@ and docbook-xsl in your Build-Depends control field.
        
         <varlistentry>
           <term>
+           <option>-s</option>
+          </term>
+          <listitem>
+            <para>shortcut for --capture=no.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
            <option>--pdb</option>
           </term>
           <listitem>
             <para>start pdb (the Python debugger) on errors.</para>
           </listitem>
         </varlistentry>
+
+        <varlistentry>
+          <term>
+            <option>-v</option>
+            <option>--verbose</option>
+          </term>
+          <listitem>
+            <para>increase verbosity.</para>
+          </listitem>
+        </varlistentry>
+
+    <variablelist>
+        <varlistentry>
+          <term>
+           <option>-l</option>
+           <option>--showlocals</option>
+          </term>
+          <listitem>
+            <para>show locals in tracebacks (disabled by default).</para>
+          </listitem>
+        </varlistentry>
        
+        <varlistentry>
+          <term>
+            <option>--report=opts</option>
+          </term>
+          <listitem>
+            <para>show more info, valid: skipped,xfailed</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
+           <option>--tb=style</option>
+          </term>
+          <listitem>
+            <para>traceback verboseness (long/short/no).</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--fulltrace</option>
+          </term>
+          <listitem>
+            <para>don't cut any tracebacks (default is to cut).</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+            <option>--funcargs</option>
+          </term>
+          <listitem>
+            <para>show available function arguments, sorted by plugin</para>
+          </listitem>
+        </varlistentry>
+
         <varlistentry>
           <term>
            <option>--pastebin=mode</option>
@@ -190,6 +234,60 @@ and docbook-xsl in your Build-Depends control field.
        
         <varlistentry>
           <term>
+            <option>--junitxml=path</option>
+          </term>
+          <listitem>
+            <para>create junit-xml style report file at given path.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
+           <option>--collectonly</option>
+          </term>
+          <listitem>
+            <para>only collect tests, don't execute them.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+            <option>--ignore=path</option>
+          </term>
+          <listitem>
+            <para>ignore path during collection (multi-allowed).</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
+            <option>--confcutdir=dir</option>
+          </term>
+          <listitem>
+            <para>only load conftest.py's relative to specified dir.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
+            <option>--doctest-modules</option>
+          </term>
+          <listitem>
+            <para>run doctests in all .py modules</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
+            <option>--doctest-glob=pat</option>
+          </term>
+          <listitem>
+            <para>doctests file matching pattern, default: test*.txt</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
            <option>--basetemp=dir</option>
           </term>
           <listitem>
@@ -199,10 +297,19 @@ and docbook-xsl in your Build-Depends control field.
        
         <varlistentry>
           <term>
-           <option>--collectonly</option>
+           <option>--version</option>
           </term>
           <listitem>
-            <para>only collect tests, don't execute them.</para>
+            <para>display py lib version and import information.</para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>-p PLUGINS</option>
+          </term>
+          <listitem>
+            <para>load the specified plugin after command line parsing.</para>
           </listitem>
         </varlistentry>
        
@@ -226,15 +333,6 @@ and docbook-xsl in your Build-Depends control field.
        
         <varlistentry>
           <term>
-           <option>--fulltrace</option>
-          </term>
-          <listitem>
-            <para>don't cut any tracebacks (default is to cut).</para>
-          </listitem>
-        </varlistentry>
-       
-        <varlistentry>
-          <term>
            <option>--debug</option>
           </term>
           <listitem>
@@ -253,10 +351,53 @@ and docbook-xsl in your Build-Depends control field.
        
         <varlistentry>
           <term>
-           <option>--version</option>
+            <option>--no-assert</option>
           </term>
           <listitem>
-            <para>display py lib version and import information.</para>
+            <para>disable python assert expression reinterpretation.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
+            <option>--genscript=path</option>
+          </term>
+          <listitem>
+            <para>create standalone py.test script at given target path.</para>
+          </listitem>
+        </varlistentry>
+
+        <varlistentry>
+          <term>
+           <option>-f</option>
+           <option>--looponfail</option>
+          </term>
+          <listitem>
+            <para>(requires xdist plugin) run tests, re-run failing test set
+              until all pass.
+            </para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>-n numprocesses</option>
+          </term>
+          <listitem>
+            <para>(requires xdist plugin) shortcut for '--dist=load
+              --tx=NUM*popen'
+            </para>
+          </listitem>
+        </varlistentry>
+       
+        <varlistentry>
+          <term>
+           <option>--boxed</option>
+          </term>
+          <listitem>
+            <para>(requires xdist plugin) box each test run in a separate
+              process.
+            </para>
           </listitem>
         </varlistentry>
        
@@ -265,10 +406,10 @@ and docbook-xsl in your Build-Depends control field.
            <option>--dist=distmode</option>
           </term>
           <listitem>
-            <para>set mode for distributing tests to exec environments.
-                         each: send each test to each available environment.
-                         load: send each test to available environment.
-                         (default) no: run tests inprocess, don't distribute.
+            <para>(requires xdist plugin) set mode for distributing tests to
+              exec environments. each: send each test to each available
+              environment. load: send each test to available environment.
+              (default) no: run tests inprocess, don't distribute.
             </para>
          </listitem>
         </varlistentry>
@@ -278,9 +419,10 @@ and docbook-xsl in your Build-Depends control field.
            <option>--tx=xspec</option>
           </term>
           <listitem>
-            <para>add a test execution environment. some examples: --tx
-                         popen//python=python2.5 --tx socket=192.168.1.102:8888
-                         --tx ssh=user@codespeak.net//chdir=testcache
+            <para>(requires xdist plugin) add a test execution environment.
+              some examples: --tx popen//python=python2.5 --tx
+              socket=192.168.1.102:8888 --tx
+              ssh=user@codespeak.net//chdir=testcache
             </para>
           </listitem>
         </varlistentry>
@@ -290,16 +432,9 @@ and docbook-xsl in your Build-Depends control field.
            <option>-d</option>
           </term>
           <listitem>
-            <para>load-balance tests.  shortcut for '--dist=load'</para>
-          </listitem>
-        </varlistentry>
-       
-        <varlistentry>
-          <term>
-           <option>-n numprocesses</option>
-          </term>
-          <listitem>
-            <para>shortcut for '--dist=load --tx=NUM*popen'</para>
+            <para>(requires xdist plugin) load-balance tests.  shortcut for
+              '--dist=load'
+            </para>
           </listitem>
         </varlistentry>
        
@@ -308,11 +443,13 @@ and docbook-xsl in your Build-Depends control field.
            <option>--rsyncdir=dir1</option>
           </term>
           <listitem>
-            <para>add directory for rsyncing to remote tx nodes.</para>
+            <para>(requires xdist plugin) add directory for rsyncing to remote
+              tx nodes.
+            </para>
           </listitem>
         </varlistentry>
 
-    </variablelist>
+   </variablelist>
   </refsect1>
   <refsect1>
     <title>AUTHOR</title>
