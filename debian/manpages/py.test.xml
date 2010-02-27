@@ -46,16 +46,28 @@ and docbook-xsl in your Build-Depends control field.
 
 <refentry>
   <refentryinfo>
-    <address>
-      &dhemail;
-    </address>
+    <authorgroup>
     <author>
       &dhfirstname;
       &dhsurname;
+      <address>
+        &dhemail;
+      </address>
     </author>
+    <editor>
+      <firstname>Adam</firstname>
+      <surname>Schmalhofer</surname>
+      <address><email>Adam.Schmalhofer@gmx.de</email></address>
+      <authorblurb>Updated manpage based on output of py.test --help
+      </authorblurb>
+    </editor>
+    </authorgroup>
     <copyright>
       <year>2007</year>
       <holder>&dhusername;</holder>
+      <year>2010</year>
+      <holder>Adam Schmalhofer</holder>
+      <holder>Holger Krekel</holder>
     </copyright>
     &dhdate;
   </refentryinfo>
