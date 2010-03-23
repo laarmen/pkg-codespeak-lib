@@ -8,10 +8,12 @@ Homepage: http://codespeak.net/py/
 Vcs-Git: git://git.chris-lamb.co.uk/debian/pkg-codespeak-lib.git
 Vcs-Browser: http://git.chris-lamb.co.uk/?p=debian/pkg-codespeak-lib.git
 
-Package: python-codespeak-lib
+Package: python-py
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}, python-pkg-resources
-Provides: ${python:Provides}
+Replaces: python-codespeak-lib (<< 1.2.1-3)
+Conflicts: python-codespeak-lib (<< 1.2.1-3)
+Provides: ${python:Provides}, python-codespeak-lib
 Suggests: subversion, python-execnet
 Description: Advanced Python testing tool and networking lib
  The Codespeak py lib aims at supporting a decent Python development process

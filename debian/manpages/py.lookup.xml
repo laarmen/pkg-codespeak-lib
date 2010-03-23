@@ -36,7 +36,7 @@ and docbook-xsl in your Build-Depends control field.
   <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
   <!ENTITY dhemail     "<email>afayolle@debian.org</email>">
   <!ENTITY dhusername  "Alexandre Fayolle">
-  <!ENTITY dhucpackage "<refentrytitle>python-codespeak-lib</refentrytitle>">
+  <!ENTITY dhucpackage "<refentrytitle>python-py</refentrytitle>">
   <!ENTITY dhpackage   "py.lookup">
 
   <!ENTITY debian      "<productname>Debian</productname>">

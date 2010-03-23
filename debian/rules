@@ -18,8 +18,8 @@ override_dh_auto_clean:
 
 override_dh_auto_install:
 	dh_auto_install
-	rm -f debian/python-codespeak-lib/usr/bin/*-2.*
+	rm -f debian/python-py/usr/bin/*-2.*
 
 override_dh_pysupport:
 	dh_pysupport
-	rm -rf debian/python-codespeak-lib/usr/share/pyshared/py/LICENSE
+	rm -rf debian/python-py/usr/share/pyshared/py/LICENSE
