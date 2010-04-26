@@ -14,7 +14,7 @@ Depends: ${misc:Depends}, ${python:Depends}, python-pkg-resources
 Replaces: python-codespeak-lib (<< 1.2.1-3)
 Conflicts: python-codespeak-lib (<< 1.2.1-3)
 Provides: ${python:Provides}, python-codespeak-lib
-Suggests: subversion, python-execnet
+Suggests: subversion, python-pytest-xdist
 Description: Advanced Python testing tool and networking lib
  The Codespeak py lib aims at supporting a decent Python development process
  addressing deployment, versioning, testing and documentation perspectives. It
