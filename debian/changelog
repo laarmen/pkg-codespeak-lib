@@ -4,6 +4,7 @@ codespeak-lib (1.2.1-4) UNRELEASED; urgency=low
   * Update py.test manpage. Thanks to Adam Schmalhofer
     <Adam.Schmalhofer@gmx.de>.
   * Update author/copyright of py.test manpage.
+  * Switch to '3.0 (quilt)' dpkg source format.
 
  -- Chris Lamb <lamby@debian.org>  Mon, 26 Apr 2010 19:49:51 +0100
 
