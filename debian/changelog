@@ -3,6 +3,7 @@ codespeak-lib (1.3.3-1) UNRELEASED; urgency=low
   * New upstream release.
   * Bump Standards-Version to 3.9.1.
   * Fix typo in py.test manpage.
+  * Prefer Breaks: over Conflicts.
 
  -- Chris Lamb <lamby@debian.org>  Sun, 01 Aug 2010 16:20:00 -0400
 
