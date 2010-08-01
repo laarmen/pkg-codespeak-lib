@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Chris Lamb <lamby@debian.org>
 Build-Depends: debhelper (>= 7.0.50~), python-support, python-setuptools, xsltproc, docbook-xsl
-Standards-Version: 3.8.4
+Standards-Version: 3.9.1
 Homepage: http://codespeak.net/py/
 Vcs-Git: git://git.chris-lamb.co.uk/debian/pkg-codespeak-lib.git
 Vcs-Browser: http://git.chris-lamb.co.uk/?p=debian/pkg-codespeak-lib.git
