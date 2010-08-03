@@ -1,5 +1,7 @@
 codespeak-lib (1.3.3-2) UNRELEASED; urgency=low
 
+  * Rebuild in a saner environment to avoid "Depends: python (< 2.6)"
+    (Closes: #591510)
   * Bump Python dependency to >= 2.5
 
  -- Chris Lamb <lamby@debian.org>  Tue, 03 Aug 2010 13:53:09 -0400
