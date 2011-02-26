@@ -6,8 +6,8 @@ Build-Depends: debhelper (>= 7.0.50~), python-support, python-setuptools, xsltpr
 Standards-Version: 3.9.1
 Homepage: http://codespeak.net/py/
 XS-Python-Version: >= 2.5
-Vcs-Git: git://git.chris-lamb.co.uk/debian/pkg-codespeak-lib.git
-Vcs-Browser: http://git.chris-lamb.co.uk/?p=debian/pkg-codespeak-lib.git
+Vcs-Git: git://github.com/lamby/pkg-codespeak-lib.git
+Vcs-Browser: https://github.com/lamby/pkg-codespeak-lib
 
 Package: python-py
 Architecture: all
