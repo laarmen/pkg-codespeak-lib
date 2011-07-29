@@ -1,0 +1,576 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>changelog</title>
+    <meta content="text/html;charset=ISO-8859-1" name="Content-Type"/>
+    <link href="style.css" media="screen" rel="stylesheet" type="text/css"/></head>
+  <body>
+    <div id="navspace">
+      <div><a href="http://pylib.org"><img alt="py lib" height="57" id="pyimg" src="http://codespeak.net/img/pylib.png" width="77"/></a></div>
+      <div id="menubar">
+        <div>
+          <div><a class="menu" href="announce/release-1.3.1.html">1.3.1 ANN</a></div></div>
+        <div>
+          <div><a class="menu" href="install.html">INSTALL</a></div></div>
+        <div>
+          <div><a class="menu" href="contact.html">CONTACT</a></div></div>
+        <div>
+          <div><a class="menu" href="changelog.html">CHANGELOG</a></div></div>
+        <div>
+          <div><a class="menu" href="faq.html">FAQ</a></div></div>
+        <div>
+          <div>
+            <h3>py.test:</h3>
+            <div><a class="menu" href="test/index.html">Index</a></div>
+            <div><a class="menu" href="test/quickstart.html">Quickstart</a></div>
+            <div><a class="menu" href="test/features.html">Features</a></div>
+            <div><a class="menu" href="test/funcargs.html">Funcargs</a></div>
+            <div><a class="menu" href="test/plugin/index.html">Plugins</a></div>
+            <div><a class="menu" href="test/customize.html">Customize</a></div>
+            <div><a class="menu" href="test/talks.html">Tutorials</a></div><a class="menu" href="http://hudson.testrun.org">hudson-tests</a></div></div>
+        <div>
+          <div>
+            <h3>supporting APIs:</h3>
+            <div><a class="menu" href="index.html">Index</a></div>
+            <div><a class="menu" href="path.html">py.path</a></div>
+            <div><a class="menu" href="code.html">py.code</a></div></div></div></div></div>
+    <div id="contentspace">
+
+
+<div class="section" id="changes-between-1-3-0-and-1-3-1">
+<h1>Changes between 1.3.0 and 1.3.1</h1>
+<div class="section" id="new-features">
+<h2>New features</h2>
+<ul>
+<li><p class="first">issue91: introduce new py.test.xfail(reason) helper
+to imperatively mark a test as expected to fail. Can
+be used from within setup and test functions. This is
+useful especially for parametrized tests when certain
+configurations are expected-to-fail.  In this case the
+declarative approach with the &#64;py.test.mark.xfail cannot
+be used as it would mark all configurations as xfail.</p>
+</li>
+<li><p class="first">issue102: introduce new --maxfail=NUM option to stop
+test runs after NUM failures.  This is a generalization
+of the '-x' or '--exitfirst' option which is now equivalent
+to '--maxfail=1'.  Both '-x' and '--maxfail' will
+now also print a line near the end indicating the Interruption.</p>
+</li>
+<li><p class="first">issue89: allow py.test.mark decorators to be used on classes
+(class decorators were introduced with python2.6) and
+also allow to have multiple markers applied at class/module level
+by specifying a list.</p>
+</li>
+<li><p class="first">improve and refine letter reporting in the progress bar:
+.  pass
+f  failed test
+s  skipped tests (reminder: use for dependency/platform mismatch only)
+x  xfailed test (test that was expected to fail)
+X  xpassed test (test that was expected to fail but passed)</p>
+<p>You can use any combination of 'fsxX' with the '-r' extended
+reporting option. The xfail/xpass results will show up as
+skipped tests in the junitxml output - which also fixes
+issue99.</p>
+</li>
+<li><p class="first">make py.test.cmdline.main() return the exitstatus instead of raising
+SystemExit and also allow it to be called multiple times.  This of
+course requires that your application and tests are properly teared
+down and don't have global state.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="fixes-maintenance">
+<h2>Fixes / Maintenance</h2>
+<ul class="simple">
+<li>improved traceback presentation:
+- improved and unified reporting for &quot;--tb=short&quot; option
+- Errors during test module imports are much shorter, (using --tb=short style)
+- raises shows shorter more relevant tracebacks
+- --fulltrace now more systematically makes traces longer / inhibits cutting</li>
+<li>improve support for raises and other dynamically compiled code by
+manipulating python's linecache.cache instead of the previous
+rather hacky way of creating custom code objects.  This makes
+it seemlessly work on Jython and PyPy where it previously didn't.</li>
+<li>fix issue96: make capturing more resilient against Control-C
+interruptions (involved somewhat substantial refactoring
+to the underlying capturing functionality to avoid race
+conditions).</li>
+<li>fix chaining of conditional skipif/xfail decorators - so it works now
+as expected to use multiple &#64;py.test.mark.skipif(condition) decorators,
+including specific reporting which of the conditions lead to skipping.</li>
+<li>fix issue95: late-import zlib so that it's not required
+for general py.test startup.</li>
+<li>fix issue94: make reporting more robust against bogus source code
+(and internally be more careful when presenting unexpected byte sequences)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="changes-between-1-2-1-and-1-3-0">
+<h1>Changes between 1.2.1 and 1.3.0</h1>
+<ul>
+<li><p class="first">deprecate --report option in favour of a new shorter and easier to
+remember -r option: it takes a string argument consisting of any
+combination of 'xfsX' characters.  They relate to the single chars
+you see during the dotted progress printing and will print an extra line
+per test at the end of the test run.  This extra line indicates the exact
+position or test ID that you directly paste to the py.test cmdline in order
+to re-run a particular test.</p>
+</li>
+<li><p class="first">allow external plugins to register new hooks via the new
+pytest_addhooks(pluginmanager) hook.  The new release of
+the pytest-xdist plugin for distributed and looponfailing
+testing requires this feature.</p>
+</li>
+<li><p class="first">add a new pytest_ignore_collect(path, config) hook to allow projects and
+plugins to define exclusion behaviour for their directory structure -
+for example you may define in a conftest.py this method:</p>
+<pre class="literal-block">
+def pytest_ignore_collect(path):
+    return path.check(link=1)
+</pre>
+<p>to prevent even a collection try of any tests in symlinked dirs.</p>
+</li>
+<li><p class="first">new pytest_pycollect_makemodule(path, parent) hook for
+allowing customization of the Module collection object for a
+matching test module.</p>
+</li>
+<li><p class="first">extend and refine xfail mechanism:
+<tt class="docutils literal">&#64;py.test.mark.xfail(run=False)</tt> do not run the decorated test
+<tt class="docutils literal"><span class="pre">&#64;py.test.mark.xfail(reason=&quot;...&quot;)</span></tt> prints the reason string in xfail summaries
+specifiying <tt class="docutils literal"><span class="pre">--runxfail</span></tt> on command line virtually ignores xfail markers</p>
+</li>
+<li><p class="first">expose (previously internal) commonly useful methods:
+py.io.get_terminal_with() -&gt; return terminal width
+py.io.ansi_print(...) -&gt; print colored/bold text on linux/win32
+py.io.saferepr(obj) -&gt; return limited representation string</p>
+</li>
+<li><p class="first">expose test outcome related exceptions as py.test.skip.Exception,
+py.test.raises.Exception etc., useful mostly for plugins
+doing special outcome interpretation/tweaking</p>
+</li>
+<li><p class="first">(issue85) fix junitxml plugin to handle tests with non-ascii output</p>
+</li>
+<li><p class="first">fix/refine python3 compatibility (thanks Benjamin Peterson)</p>
+</li>
+<li><p class="first">fixes for making the jython/win32 combination work, note however:
+jython2.5.1/win32 does not provide a command line launcher, see
+<a class="reference external" href="http://bugs.jython.org/issue1491">http://bugs.jython.org/issue1491</a> . See pylib install documentation
+for how to work around.</p>
+</li>
+<li><p class="first">fixes for handling of unicode exception values and unprintable objects</p>
+</li>
+<li><p class="first">(issue87) fix unboundlocal error in assertionold code</p>
+</li>
+<li><p class="first">(issue86) improve documentation for looponfailing</p>
+</li>
+<li><p class="first">refine IO capturing: stdin-redirect pseudo-file now has a NOP close() method</p>
+</li>
+<li><p class="first">ship distribute_setup.py version 0.6.10</p>
+</li>
+<li><p class="first">added links to the new capturelog and coverage plugins</p>
+</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-2-1-and-1-2-0">
+<h1>Changes between 1.2.1 and 1.2.0</h1>
+<ul>
+<li><p class="first">refined usage and options for &quot;py.cleanup&quot;:</p>
+<pre class="literal-block">
+py.cleanup     # remove &quot;*.pyc&quot; and &quot;*$py.class&quot; (jython) files
+py.cleanup -e .swp -e .cache # also remove files with these extensions
+py.cleanup -s  # remove &quot;build&quot; and &quot;dist&quot; directory next to setup.py files
+py.cleanup -d  # also remove empty directories
+py.cleanup -a  # synonym for &quot;-s -d -e 'pip-log.txt'&quot;
+py.cleanup -n  # dry run, only show what would be removed
+</pre>
+</li>
+<li><p class="first">add a new option &quot;py.test --funcargs&quot; which shows available funcargs
+and their help strings (docstrings on their respective factory function)
+for a given test path</p>
+</li>
+<li><p class="first">display a short and concise traceback if a funcarg lookup fails</p>
+</li>
+<li><p class="first">early-load &quot;conftest.py&quot; files in non-dot first-level sub directories.
+allows to conveniently keep and access test-related options in a <tt class="docutils literal">test</tt>
+subdir and still add command line options.</p>
+</li>
+<li><p class="first">fix issue67: new super-short traceback-printing option: &quot;--tb=line&quot; will print a single line for each failing (python) test indicating its filename, lineno and the failure value</p>
+</li>
+<li><p class="first">fix issue78: always call python-level teardown functions even if the
+according setup failed.  This includes refinements for calling setup_module/class functions
+which will now only be called once instead of the previous behaviour where they'd be called
+multiple times if they raise an exception (including a Skipped exception).  Any exception
+will be re-corded and associated with all tests in the according module/class scope.</p>
+</li>
+<li><p class="first">fix issue63: assume &lt;40 columns to be a bogus terminal width, default to 80</p>
+</li>
+<li><p class="first">fix pdb debugging to be in the correct frame on raises-related errors</p>
+</li>
+<li><p class="first">update apipkg.py to fix an issue where recursive imports might
+unnecessarily break importing</p>
+</li>
+<li><p class="first">fix plugin links</p>
+</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-2-and-1-1-1">
+<h1>Changes between 1.2 and 1.1.1</h1>
+<ul class="simple">
+<li>moved dist/looponfailing from py.test core into a new
+separately released pytest-xdist plugin.</li>
+<li>new junitxml plugin: --junitxml=path will generate a junit style xml file
+which is processable e.g. by the Hudson CI system.</li>
+<li>new option: --genscript=path will generate a standalone py.test script
+which will not need any libraries installed.  thanks to Ralf Schmitt.</li>
+<li>new option: --ignore will prevent specified path from collection.
+Can be specified multiple times.</li>
+<li>new option: --confcutdir=dir will make py.test only consider conftest
+files that are relative to the specified dir.</li>
+<li>new funcarg: &quot;pytestconfig&quot; is the pytest config object for access
+to command line args and can now be easily used in a test.</li>
+<li>install 'py.test' and <cite>py.which</cite> with a <tt class="docutils literal"><span class="pre">-$VERSION</span></tt> suffix to
+disambiguate between Python3, python2.X, Jython and PyPy installed versions.</li>
+<li>new &quot;pytestconfig&quot; funcarg allows access to test config object</li>
+<li>new &quot;pytest_report_header&quot; hook can return additional lines
+to be displayed at the header of a test run.</li>
+<li>(experimental) allow &quot;py.test path::name1::name2::...&quot; for pointing
+to a test within a test collection directly.  This might eventually
+evolve as a full substitute to &quot;-k&quot; specifications.</li>
+<li>streamlined plugin loading: order is now as documented in
+customize.html: setuptools, ENV, commandline, conftest.
+also setuptools entry point names are turned to canonical namees (&quot;pytest_*&quot;)</li>
+<li>automatically skip tests that need 'capfd' but have no os.dup</li>
+<li>allow pytest_generate_tests to be defined in classes as well</li>
+<li>deprecate usage of 'disabled' attribute in favour of pytestmark</li>
+<li>deprecate definition of Directory, Module, Class and Function nodes
+in conftest.py files.  Use pytest collect hooks instead.</li>
+<li>collection/item node specific runtest/collect hooks are only called exactly
+on matching conftest.py files, i.e. ones which are exactly below
+the filesystem path of an item</li>
+<li>change: the first pytest_collect_directory hook to return something
+will now prevent further hooks to be called.</li>
+<li>change: figleaf plugin now requires --figleaf to run.  Also
+change its long command line options to be a bit shorter (see py.test -h).</li>
+<li>change: pytest doctest plugin is now enabled by default and has a
+new option --doctest-glob to set a pattern for file matches.</li>
+<li>change: remove internal py._* helper vars, only keep py._pydir</li>
+<li>robustify capturing to survive if custom pytest_runtest_setup
+code failed and prevented the capturing setup code from running.</li>
+<li>make py.test.* helpers provided by default plugins visible early -
+works transparently both for pydoc and for interactive sessions
+which will regularly see e.g. py.test.mark and py.test.importorskip.</li>
+<li>simplify internal plugin manager machinery</li>
+<li>simplify internal collection tree by introducing a RootCollector node</li>
+<li>fix assert reinterpreation that sees a call containing &quot;keyword=...&quot;</li>
+<li>fix issue66: invoke pytest_sessionstart and pytest_sessionfinish
+hooks on slaves during dist-testing, report module/session teardown
+hooks correctly.</li>
+<li>fix issue65: properly handle dist-testing if no
+execnet/py lib installed remotely.</li>
+<li>skip some install-tests if no execnet is available</li>
+<li>fix docs, fix internal bin/ script generation</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-1-1-and-1-1-0">
+<h1>Changes between 1.1.1 and 1.1.0</h1>
+<ul class="simple">
+<li>introduce automatic plugin registration via 'pytest11'
+entrypoints via setuptools' pkg_resources.iter_entry_points</li>
+<li>fix py.test dist-testing to work with execnet &gt;= 1.0.0b4</li>
+<li>re-introduce py.test.cmdline.main() for better backward compatibility</li>
+<li>svn paths: fix a bug with path.check(versioned=True) for svn paths,
+allow '%' in svn paths, make svnwc.update() default to interactive mode
+like in 1.0.x and add svnwc.update(interactive=False) to inhibit interaction.</li>
+<li>refine distributed tarball to contain test and no pyc files</li>
+<li>try harder to have deprecation warnings for py.compat.* accesses
+report a correct location</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-1-0-and-1-0-2">
+<h1>Changes between 1.1.0 and 1.0.2</h1>
+<ul class="simple">
+<li>adjust and improve docs</li>
+<li>remove py.rest tool and internal namespace - it was
+never really advertised and can still be used with
+the old release if needed.  If there is interest
+it could be revived into its own tool i guess.</li>
+<li>fix issue48 and issue59: raise an Error if the module
+from an imported test file does not seem to come from
+the filepath - avoids &quot;same-name&quot; confusion that has
+been reported repeatedly</li>
+<li>merged Ronny's nose-compatibility hacks: now
+nose-style setup_module() and setup() functions are
+supported</li>
+<li>introduce generalized py.test.mark function marking</li>
+<li>reshuffle / refine command line grouping</li>
+<li>deprecate parser.addgroup in favour of getgroup which creates option group</li>
+<li>add --report command line option that allows to control showing of skipped/xfailed sections</li>
+<li>generalized skipping: a new way to mark python functions with skipif or xfail
+at function, class and modules level based on platform or sys-module attributes.</li>
+<li>extend py.test.mark decorator to allow for positional args</li>
+<li>introduce and test &quot;py.cleanup -d&quot; to remove empty directories</li>
+<li>fix issue #59 - robustify unittest test collection</li>
+<li>make bpython/help interaction work by adding an __all__ attribute
+to ApiModule, cleanup initpkg</li>
+<li>use MIT license for pylib, add some contributors</li>
+<li>remove py.execnet code and substitute all usages with 'execnet' proper</li>
+<li>fix issue50 - cached_setup now caches more to expectations
+for test functions with multiple arguments.</li>
+<li>merge Jarko's fixes, issue #45 and #46</li>
+<li>add the ability to specify a path for py.lookup to search in</li>
+<li>fix a funcarg cached_setup bug probably only occuring
+in distributed testing and &quot;module&quot; scope with teardown.</li>
+<li>many fixes and changes for making the code base python3 compatible,
+many thanks to Benjamin Peterson for helping with this.</li>
+<li>consolidate builtins implementation to be compatible with &gt;=2.3,
+add helpers to ease keeping 2 and 3k compatible code</li>
+<li>deprecate py.compat.doctest|subprocess|textwrap|optparse</li>
+<li>deprecate py.magic.autopath, remove py/magic directory</li>
+<li>move pytest assertion handling to py/code and a pytest_assertion
+plugin, add &quot;--no-assert&quot; option, deprecate py.magic namespaces
+in favour of (less) py.code ones.</li>
+<li>consolidate and cleanup py/code classes and files</li>
+<li>cleanup py/misc, move tests to bin-for-dist</li>
+<li>introduce delattr/delitem/delenv methods to py.test's monkeypatch funcarg</li>
+<li>consolidate py.log implementation, remove old approach.</li>
+<li>introduce py.io.TextIO and py.io.BytesIO for distinguishing between
+text/unicode and byte-streams (uses underlying standard lib io.*
+if available)</li>
+<li>make py.unittest_convert helper script available which converts &quot;unittest.py&quot;
+style files into the simpler assert/direct-test-classes py.test/nosetests
+style.  The script was written by Laura Creighton.</li>
+<li>simplified internal localpath implementation</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-0-1-and-1-0-2">
+<h1>Changes between 1.0.1 and 1.0.2</h1>
+<ul class="simple">
+<li>fixing packaging issues, triggered by fedora redhat packaging,
+also added doc, examples and contrib dirs to the tarball.</li>
+<li>added a documentation link to the new django plugin.</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-0-0-and-1-0-1">
+<h1>Changes between 1.0.0 and 1.0.1</h1>
+<ul class="simple">
+<li>added a 'pytest_nose' plugin which handles nose.SkipTest,
+nose-style function/method/generator setup/teardown and
+tries to report functions correctly.</li>
+<li>capturing of unicode writes or encoded strings to sys.stdout/err
+work better, also terminalwriting was adapted and somewhat
+unified between windows and linux.</li>
+<li>improved documentation layout and content a lot</li>
+<li>added a &quot;--help-config&quot; option to show conftest.py / ENV-var names for
+all longopt cmdline options, and some special conftest.py variables.
+renamed 'conf_capture' conftest setting to 'option_capture' accordingly.</li>
+<li>fix issue #27: better reporting on non-collectable items given on commandline
+(e.g. pyc files)</li>
+<li>fix issue #33: added --version flag (thanks Benjamin Peterson)</li>
+<li>fix issue #32: adding support for &quot;incomplete&quot; paths to wcpath.status()</li>
+<li>&quot;Test&quot; prefixed classes are <em>not</em> collected by default anymore if they
+have an __init__ method</li>
+<li>monkeypatch setenv() now accepts a &quot;prepend&quot; parameter</li>
+<li>improved reporting of collection error tracebacks</li>
+<li>simplified multicall mechanism and plugin architecture,
+renamed some internal methods and argnames</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-0-0b9-and-1-0-0">
+<h1>Changes between 1.0.0b9 and 1.0.0</h1>
+<ul class="simple">
+<li>more terse reporting try to show filesystem path relatively to current dir</li>
+<li>improve xfail output a bit</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-0-0b8-and-1-0-0b9">
+<h1>Changes between 1.0.0b8 and 1.0.0b9</h1>
+<ul class="simple">
+<li>cleanly handle and report final teardown of test setup</li>
+<li>fix svn-1.6 compat issue with py.path.svnwc().versioned()
+(thanks Wouter Vanden Hove)</li>
+<li>setup/teardown or collection problems now show as ERRORs
+or with big &quot;E&quot;'s in the progress lines.  they are reported
+and counted separately.</li>
+<li>dist-testing: properly handle test items that get locally
+collected but cannot be collected on the remote side - often
+due to platform/dependency reasons</li>
+<li>simplified py.test.mark API - see keyword plugin documentation</li>
+<li>integrate better with logging: capturing now by default captures
+test functions and their immediate setup/teardown in a single stream</li>
+<li>capsys and capfd funcargs now have a readouterr() and a close() method
+(underlyingly py.io.StdCapture/FD objects are used which grew a
+readouterr() method as well to return snapshots of captured out/err)</li>
+<li>make assert-reinterpretation work better with comparisons not
+returning bools (reported with numpy from thanks maciej fijalkowski)</li>
+<li>reworked per-test output capturing into the pytest_iocapture.py plugin
+and thus removed capturing code from config object</li>
+<li>item.repr_failure(excinfo) instead of item.repr_failure(excinfo, outerr)</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-0-0b7-and-1-0-0b8">
+<h1>Changes between 1.0.0b7 and 1.0.0b8</h1>
+<ul class="simple">
+<li>pytest_unittest-plugin is now enabled by default</li>
+<li>introduced pytest_keyboardinterrupt hook and
+refined pytest_sessionfinish hooked, added tests.</li>
+<li>workaround a buggy logging module interaction (&quot;closing already closed
+files&quot;).  Thanks to Sridhar Ratnakumar for triggering.</li>
+<li>if plugins use &quot;py.test.importorskip&quot; for importing
+a dependency only a warning will be issued instead
+of exiting the testing process.</li>
+<li>many improvements to docs:
+- refined funcargs doc , use the term &quot;factory&quot; instead of &quot;provider&quot;
+- added a new talk/tutorial doc page
+- better download page
+- better plugin docstrings
+- added new plugins page and automatic doc generation script</li>
+<li>fixed teardown problem related to partially failing funcarg setups
+(thanks MrTopf for reporting), &quot;pytest_runtest_teardown&quot; is now
+always invoked even if the &quot;pytest_runtest_setup&quot; failed.</li>
+<li>tweaked doctest output for docstrings in py modules,
+thanks Radomir.</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-0-0b3-and-1-0-0b7">
+<h1>Changes between 1.0.0b3 and 1.0.0b7</h1>
+<ul class="simple">
+<li>renamed py.test.xfail back to py.test.mark.xfail to avoid
+two ways to decorate for xfail</li>
+<li>re-added py.test.mark decorator for setting keywords on functions
+(it was actually documented so removing it was not nice)</li>
+<li>remove scope-argument from request.addfinalizer() because
+request.cached_setup has the scope arg. TOOWTDI.</li>
+<li>perform setup finalization before reporting failures</li>
+<li>apply modified patches from Andreas Kloeckner to allow
+test functions to have no func_code (#22) and to make
+&quot;-k&quot; and function keywords work  (#20)</li>
+<li>apply patch from Daniel Peolzleithner (issue #23)</li>
+<li>resolve issue #18, multiprocessing.Manager() and
+redirection clash</li>
+<li>make __name__ == &quot;__channelexec__&quot; for remote_exec code</li>
+</ul>
+</div>
+<div class="section" id="changes-between-1-0-0b1-and-1-0-0b3">
+<h1>Changes between 1.0.0b1 and 1.0.0b3</h1>
+<ul class="simple">
+<li>plugin classes are removed: one now defines
+hooks directly in conftest.py or global pytest_*.py
+files.</li>
+<li>added new pytest_namespace(config) hook that allows
+to inject helpers directly to the py.test.* namespace.</li>
+<li>documented and refined many hooks</li>
+<li>added new style of generative tests via
+pytest_generate_tests hook that integrates
+well with function arguments.</li>
+</ul>
+</div>
+<div class="section" id="changes-between-0-9-2-and-1-0-0b1">
+<h1>Changes between 0.9.2 and 1.0.0b1</h1>
+<ul class="simple">
+<li>introduced new &quot;funcarg&quot; setup method,
+see doc/test/funcarg.txt</li>
+<li>introduced plugin architecuture and many
+new py.test plugins, see
+doc/test/plugins.txt</li>
+<li>teardown_method is now guaranteed to get
+called after a test method has run.</li>
+<li>new method: py.test.importorskip(mod,minversion)
+will either import or call py.test.skip()</li>
+<li>completely revised internal py.test architecture</li>
+<li>new py.process.ForkedFunc object allowing to
+fork execution of a function to a sub process
+and getting a result back.</li>
+</ul>
+<p>XXX lots of things missing here XXX</p>
+</div>
+<div class="section" id="changes-between-0-9-1-and-0-9-2">
+<h1>Changes between 0.9.1 and 0.9.2</h1>
+<ul class="simple">
+<li>refined installation and metadata, created new setup.py,
+now based on setuptools/ez_setup (thanks to Ralf Schmitt
+for his support).</li>
+<li>improved the way of making py.* scripts available in
+windows environments, they are now added to the
+Scripts directory as &quot;.cmd&quot; files.</li>
+<li>py.path.svnwc.status() now is more complete and
+uses xml output from the 'svn' command if available
+(Guido Wesdorp)</li>
+<li>fix for py.path.svn* to work with svn 1.5
+(Chris Lamb)</li>
+<li>fix path.relto(otherpath) method on windows to
+use normcase for checking if a path is relative.</li>
+<li>py.test's traceback is better parseable from editors
+(follows the filenames:LINENO: MSG convention)
+(thanks to Osmo Salomaa)</li>
+<li>fix to javascript-generation, &quot;py.test --runbrowser&quot;
+should work more reliably now</li>
+<li>removed previously accidentally added
+py.test.broken and py.test.notimplemented helpers.</li>
+<li>there now is a py.__version__ attribute</li>
+</ul>
+</div>
+<div class="section" id="changes-between-0-9-0-and-0-9-1">
+<h1>Changes between 0.9.0 and 0.9.1</h1>
+<p>This is a fairly complete list of changes between 0.9 and 0.9.1, which can
+serve as a reference for developers.</p>
+<ul class="simple">
+<li>allowing + signs in py.path.svn urls [39106]</li>
+<li>fixed support for Failed exceptions without excinfo in py.test [39340]</li>
+<li>added support for killing processes for Windows (as well as platforms that
+support os.kill) in py.misc.killproc [39655]</li>
+<li>added setup/teardown for generative tests to py.test [40702]</li>
+<li>added detection of FAILED TO LOAD MODULE to py.test [40703, 40738, 40739]</li>
+<li>fixed problem with calling .remove() on wcpaths of non-versioned files in
+py.path [44248]</li>
+<li>fixed some import and inheritance issues in py.test [41480, 44648, 44655]</li>
+<li>fail to run greenlet tests when pypy is available, but without stackless
+[45294]</li>
+<li>small fixes in rsession tests [45295]</li>
+<li>fixed issue with 2.5 type representations in py.test [45483, 45484]</li>
+<li>made that internal reporting issues displaying is done atomically in py.test
+[45518]</li>
+<li>made that non-existing files are igored by the py.lookup script [45519]</li>
+<li>improved exception name creation in py.test [45535]</li>
+<li>made that less threads are used in execnet [merge in 45539]</li>
+<li>removed lock required for atomical reporting issue displaying in py.test
+[45545]</li>
+<li>removed globals from execnet [45541, 45547]</li>
+<li>refactored cleanup mechanics, made that setDaemon is set to 1 to make atexit
+get called in 2.5 (py.execnet) [45548]</li>
+<li>fixed bug in joining threads in py.execnet's servemain [45549]</li>
+<li>refactored py.test.rsession tests to not rely on exact output format anymore
+[45646]</li>
+<li>using repr() on test outcome [45647]</li>
+<li>added 'Reason' classes for py.test.skip() [45648, 45649]</li>
+<li>killed some unnecessary sanity check in py.test.collect [45655]</li>
+<li>avoid using os.tmpfile() in py.io.fdcapture because on Windows it's only
+usable by Administrators [45901]</li>
+<li>added support for locking and non-recursive commits to py.path.svnwc [45994]</li>
+<li>locking files in py.execnet to prevent CPython from segfaulting [46010]</li>
+<li>added export() method to py.path.svnurl</li>
+<li>fixed -d -x in py.test [47277]</li>
+<li>fixed argument concatenation problem in py.path.svnwc [49423]</li>
+<li>restore py.test behaviour that it exits with code 1 when there are failures
+[49974]</li>
+<li>don't fail on html files that don't have an accompanying .txt file [50606]</li>
+<li>fixed 'utestconvert.py &lt; input' [50645]</li>
+<li>small fix for code indentation in py.code.source [50755]</li>
+<li>fix _docgen.py documentation building [51285]</li>
+<li>improved checks for source representation of code blocks in py.test [51292]</li>
+<li>added support for passing authentication to py.path.svn* objects [52000,
+52001]</li>
+<li>removed sorted() call for py.apigen tests in favour of [].sort() to support
+Python 2.3 [52481]</li>
+</ul>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7597274-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body></html>

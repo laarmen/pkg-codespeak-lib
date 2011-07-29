@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>release-1.0.1</title>
+    <meta content="text/html;charset=ISO-8859-1" name="Content-Type"/>
+    <link href="../style.css" media="screen" rel="stylesheet" type="text/css"/></head>
+  <body>
+    <div id="navspace">
+      <div><a href="http://pylib.org"><img alt="py lib" height="57" id="pyimg" src="http://codespeak.net/img/pylib.png" width="77"/></a></div>
+      <div id="menubar">
+        <div>
+          <div><a class="menu" href="release-1.3.4.html">1.3.4 ANN</a></div></div>
+        <div>
+          <div><a class="menu" href="../install.html">INSTALL</a></div></div>
+        <div>
+          <div><a class="menu" href="../contact.html">CONTACT</a></div></div>
+        <div>
+          <div><a class="menu" href="../changelog.html">CHANGELOG</a></div></div>
+        <div>
+          <div><a class="menu" href="../faq.html">FAQ</a></div></div>
+        <div>
+          <div>
+            <h3>py.test:</h3>
+            <div><a class="menu" href="../test/index.html">Index</a></div>
+            <div><a class="menu" href="../test/quickstart.html">Quickstart</a></div>
+            <div><a class="menu" href="../test/features.html">Features</a></div>
+            <div><a class="menu" href="../test/funcargs.html">Funcargs</a></div>
+            <div><a class="menu" href="../test/plugin/index.html">Plugins</a></div>
+            <div><a class="menu" href="../test/customize.html">Customize</a></div>
+            <div><a class="menu" href="../test/talks.html">Tutorials</a></div><a class="menu" href="http://hudson.testrun.org">hudson-tests</a></div></div>
+        <div>
+          <div>
+            <h3>supporting APIs:</h3>
+            <div><a class="menu" href="../index.html">Index</a></div>
+            <div><a class="menu" href="../path.html">py.path</a></div>
+            <div><a class="menu" href="../code.html">py.code</a></div></div></div></div></div>
+    <div id="contentspace">
+
+
+<div class="section" id="improved-reporting-nose-unittest-py-support-bug-fixes">
+<h1>1.0.1: improved reporting, nose/unittest.py support, bug fixes</h1>
+<p>This is a bugfix release of pylib/py.test also coming with:</p>
+<ul class="simple">
+<li>improved documentation, improved navigation</li>
+<li>test failure reporting improvements</li>
+<li>support for directly running existing nose/unittest.py style tests</li>
+</ul>
+<p>visit here for more info, including quickstart and tutorials:</p>
+<blockquote>
+<a class="reference external" href="http://pytest.org">http://pytest.org</a> and <a class="reference external" href="http://pylib.org">http://pylib.org</a></blockquote>
+</div>
+<div class="section" id="changelog-1-0-0-to-1-0-1">
+<h1>Changelog 1.0.0 to 1.0.1</h1>
+<ul class="simple">
+<li>added a default 'pytest_nose' plugin which handles nose.SkipTest,
+nose-style function/method/generator setup/teardown and
+tries to report functions correctly.</li>
+<li>improved documentation, better navigation: see <a class="reference external" href="http://pytest.org">http://pytest.org</a></li>
+<li>added a &quot;--help-config&quot; option to show conftest.py / ENV-var names for
+all longopt cmdline options, and some special conftest.py variables.
+renamed 'conf_capture' conftest setting to 'option_capture' accordingly.</li>
+<li>unicode fixes: capturing and unicode writes to sys.stdout
+(through e.g a print statement) now work within tests,
+they are encoded as &quot;utf8&quot; by default, also terminalwriting
+was adapted and somewhat unified between windows and linux</li>
+<li>fix issue #27: better reporting on non-collectable items given on commandline
+(e.g. pyc files)</li>
+<li>fix issue #33: added --version flag (thanks Benjamin Peterson)</li>
+<li>fix issue #32: adding support for &quot;incomplete&quot; paths to wcpath.status()</li>
+<li>&quot;Test&quot; prefixed classes are <em>not</em> collected by default anymore if they
+have an __init__ method</li>
+<li>monkeypatch setenv() now accepts a &quot;prepend&quot; parameter</li>
+<li>improved reporting of collection error tracebacks</li>
+<li>simplified multicall mechanism and plugin architecture,
+renamed some internal methods and argnames</li>
+</ul>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7597274-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body></html>

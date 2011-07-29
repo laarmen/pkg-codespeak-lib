@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>tmpdir</title>
+    <meta content="text/html;charset=ISO-8859-1" name="Content-Type"/>
+    <link href="../../style.css" media="screen" rel="stylesheet" type="text/css"/></head>
+  <body>
+    <div id="navspace">
+      <div><a href="http://pylib.org"><img alt="py lib" height="57" id="pyimg" src="http://codespeak.net/img/pylib.png" width="77"/></a></div>
+      <div id="menubar">
+        <div>
+          <div><a class="menu" href="../../announce/release-1.3.4.html">1.3.4 ANN</a></div></div>
+        <div>
+          <div><a class="menu" href="../../install.html">INSTALL</a></div></div>
+        <div>
+          <div><a class="menu" href="../../contact.html">CONTACT</a></div></div>
+        <div>
+          <div><a class="menu" href="../../changelog.html">CHANGELOG</a></div></div>
+        <div>
+          <div><a class="menu" href="../../faq.html">FAQ</a></div></div>
+        <div>
+          <div>
+            <h3>py.test:</h3>
+            <div><a class="menu" href="../index.html">Index</a></div>
+            <div><a class="menu" href="../quickstart.html">Quickstart</a></div>
+            <div><a class="menu" href="../features.html">Features</a></div>
+            <div><a class="menu" href="../funcargs.html">Funcargs</a></div>
+            <div><a class="menu" href="index.html">Plugins</a></div>
+            <div><a class="menu" href="../customize.html">Customize</a></div>
+            <div><a class="menu" href="../talks.html">Tutorials</a></div><a class="menu" href="http://hudson.testrun.org">hudson-tests</a></div></div>
+        <div>
+          <div>
+            <h3>supporting APIs:</h3>
+            <div><a class="menu" href="../../index.html">Index</a></div>
+            <div><a class="menu" href="../../path.html">py.path</a></div>
+            <div><a class="menu" href="../../code.html">py.code</a></div></div></div></div></div>
+    <div id="contentspace">
+
+
+<div class="section" id="provide-temporary-directories-to-test-functions">
+<h1>provide temporary directories to test functions.</h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#the-tmpdir-test-function-argument" id="id1">the 'tmpdir' test function argument</a></li>
+</ul>
+</div>
+<p>usage example:</p>
+<pre class="literal-block">
+def test_plugin(tmpdir):
+    tmpdir.join(&quot;hello&quot;).write(&quot;hello&quot;)
+</pre>
+<div class="section" id="the-tmpdir-test-function-argument">
+<span id="tmpdir-funcarg"></span><h2><a class="toc-backref" href="#id1">the 'tmpdir' test function argument</a></h2>
+<p>return a temporary directory path object
+unique to each test function invocation,
+created as a sub directory of the base temporary
+directory.  The returned object is a <a class="reference external" href="../../path.html">py.path.local</a>
+path object.</p>
+</div>
+</div>
+<div class="section" id="start-improving-this-plugin-in-30-seconds">
+<h1>Start improving this plugin in 30 seconds</h1>
+<ol class="arabic simple">
+<li>Download <a class="reference external" href="http://bitbucket.org/hpk42/py-trunk/raw/1.3.4/py/_plugin/pytest_tmpdir.py">pytest_tmpdir.py</a> plugin source code</li>
+<li>put it somewhere as <tt class="docutils literal">pytest_tmpdir.py</tt> into your import path</li>
+<li>a subsequent <tt class="docutils literal">py.test</tt> run will use your local version</li>
+</ol>
+<p>Checkout <a class="reference external" href="../customize.html">customize</a>, other <a class="reference external" href="index.html">plugins</a> or <a class="reference external" href="../../contact.html">get in contact</a>.</p>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7597274-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body></html>

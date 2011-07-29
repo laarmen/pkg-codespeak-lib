@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>coverage</title>
+    <meta content="text/html;charset=ISO-8859-1" name="Content-Type"/>
+    <link href="../../style.css" media="screen" rel="stylesheet" type="text/css"/></head>
+  <body>
+    <div id="navspace">
+      <div><a href="http://pylib.org"><img alt="py lib" height="57" id="pyimg" src="http://codespeak.net/img/pylib.png" width="77"/></a></div>
+      <div id="menubar">
+        <div>
+          <div><a class="menu" href="../../announce/release-1.3.4.html">1.3.4 ANN</a></div></div>
+        <div>
+          <div><a class="menu" href="../../install.html">INSTALL</a></div></div>
+        <div>
+          <div><a class="menu" href="../../contact.html">CONTACT</a></div></div>
+        <div>
+          <div><a class="menu" href="../../changelog.html">CHANGELOG</a></div></div>
+        <div>
+          <div><a class="menu" href="../../faq.html">FAQ</a></div></div>
+        <div>
+          <div>
+            <h3>py.test:</h3>
+            <div><a class="menu" href="../index.html">Index</a></div>
+            <div><a class="menu" href="../quickstart.html">Quickstart</a></div>
+            <div><a class="menu" href="../features.html">Features</a></div>
+            <div><a class="menu" href="../funcargs.html">Funcargs</a></div>
+            <div><a class="menu" href="index.html">Plugins</a></div>
+            <div><a class="menu" href="../customize.html">Customize</a></div>
+            <div><a class="menu" href="../talks.html">Tutorials</a></div><a class="menu" href="http://hudson.testrun.org">hudson-tests</a></div></div>
+        <div>
+          <div>
+            <h3>supporting APIs:</h3>
+            <div><a class="menu" href="../../index.html">Index</a></div>
+            <div><a class="menu" href="../../path.html">py.path</a></div>
+            <div><a class="menu" href="../../code.html">py.code</a></div></div></div></div></div>
+    <div id="contentspace">
+<div class="document" id="write-and-report-coverage-data-with-the-coverage-package">
+<h1 class="title">Write and report coverage data with the 'coverage' package.</h1>
+
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#install" id="id1">Install</a></li>
+<li><a class="reference internal" href="#usage" id="id2">Usage</a></li>
+<li><a class="reference internal" href="#command-line-options" id="id3">command line options</a></li>
+</ul>
+</div>
+<p>Note: Original code by Ross Lawley.</p>
+<div class="section" id="install">
+<h1><a class="toc-backref" href="#id1">Install</a></h1>
+<p>Use pip to (un)install:</p>
+<pre class="literal-block">
+pip install pytest-coverage
+pip uninstall pytest-coverage
+</pre>
+<p>or alternatively use easy_install to install:</p>
+<pre class="literal-block">
+easy_install pytest-coverage
+</pre>
+</div>
+<div class="section" id="usage">
+<h1><a class="toc-backref" href="#id2">Usage</a></h1>
+<p>To get full test coverage reports for a particular package type:</p>
+<pre class="literal-block">
+py.test --cover-report=report
+</pre>
+</div>
+<div class="section" id="command-line-options">
+<h1><a class="toc-backref" href="#id3">command line options</a></h1>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--cover=COVERPACKAGES</span></tt></dt>
+<dd>(multi allowed) only include info from specified package.</dd>
+<dt><tt class="docutils literal"><span class="pre">--cover-report=REPORT_TYPE</span></tt></dt>
+<dd><dl class="first last docutils">
+<dt>html: Directory for html output.</dt>
+<dd>report: Output a text report.
+annotate: Annotate your source code for which lines were executed and which were not.
+xml: Output an xml report compatible with the cobertura plugin for hudson.</dd>
+</dl>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">--cover-directory=DIRECTORY</span></tt></dt>
+<dd>Directory for the reports (html / annotate results) defaults to ./coverage</dd>
+<dt><tt class="docutils literal"><span class="pre">--cover-xml-file=XML_FILE</span></tt></dt>
+<dd>File for the xml report defaults to ./coverage.xml</dd>
+<dt><tt class="docutils literal"><span class="pre">--cover-show-missing</span></tt></dt>
+<dd>Show missing files</dd>
+<dt><tt class="docutils literal"><span class="pre">--cover-ignore-errors=IGNORE_ERRORS</span></tt></dt>
+<dd>Ignore errors of finding source files for code.</dd>
+</dl>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7597274-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body></html>
