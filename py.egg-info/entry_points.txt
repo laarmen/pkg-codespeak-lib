@@ -1,0 +1,11 @@
+[console_scripts]
+py.test-2.6 = py.cmdline:pytest
+py.lookup = py.cmdline:pylookup
+py.countloc = py.cmdline:pycountloc
+py.test = py.cmdline:pytest
+py.which-2.6 = py.cmdline:pywhich
+py.which = py.cmdline:pywhich
+py.cleanup = py.cmdline:pycleanup
+py.svnwcrevert = py.cmdline:pysvnwcrevert
+py.convert_unittest = py.cmdline:pyconvert_unittest
+

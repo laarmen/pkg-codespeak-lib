@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>misc</title>
+    <meta content="text/html;charset=ISO-8859-1" name="Content-Type"/>
+    <link href="style.css" media="screen" rel="stylesheet" type="text/css"/></head>
+  <body>
+    <div id="navspace">
+      <div><a href="http://pylib.org"><img alt="py lib" height="57" id="pyimg" src="http://codespeak.net/img/pylib.png" width="77"/></a></div>
+      <div id="menubar">
+        <div>
+          <div><a class="menu" href="announce/release-1.3.4.html">1.3.4 ANN</a></div></div>
+        <div>
+          <div><a class="menu" href="install.html">INSTALL</a></div></div>
+        <div>
+          <div><a class="menu" href="contact.html">CONTACT</a></div></div>
+        <div>
+          <div><a class="menu" href="changelog.html">CHANGELOG</a></div></div>
+        <div>
+          <div><a class="menu" href="faq.html">FAQ</a></div></div>
+        <div>
+          <div>
+            <h3>py.test:</h3>
+            <div><a class="menu" href="test/index.html">Index</a></div>
+            <div><a class="menu" href="test/quickstart.html">Quickstart</a></div>
+            <div><a class="menu" href="test/features.html">Features</a></div>
+            <div><a class="menu" href="test/funcargs.html">Funcargs</a></div>
+            <div><a class="menu" href="test/plugin/index.html">Plugins</a></div>
+            <div><a class="menu" href="test/customize.html">Customize</a></div>
+            <div><a class="menu" href="test/talks.html">Tutorials</a></div><a class="menu" href="http://hudson.testrun.org">hudson-tests</a></div></div>
+        <div>
+          <div>
+            <h3>supporting APIs:</h3>
+            <div><a class="menu" href="index.html">Index</a></div>
+            <div><a class="menu" href="path.html">py.path</a></div>
+            <div><a class="menu" href="code.html">py.code</a></div></div></div></div></div>
+    <div id="contentspace">
+<div class="document" id="miscellaneous-features-of-the-py-lib">
+<h1 class="title">Miscellaneous features of the py lib</h1>
+
+<div class="section" id="mapping-the-standard-python-library-into-py">
+<h1>Mapping the standard python library into py</h1>
+<p>The <tt class="docutils literal">py.std</tt> object allows lazy access to
+standard library modules.  For example, to get to the print-exception
+functionality of the standard library you can write:</p>
+<pre class="literal-block">
+py.std.traceback.print_exc()
+</pre>
+<p>without having to do anything else than the usual <tt class="docutils literal">import py</tt>
+at the beginning.  You can access any other top-level standard
+library module this way.  This means that you will only trigger
+imports of modules that are actually needed.  Note that no attempt
+is made to import submodules.</p>
+</div>
+<div class="section" id="support-for-interaction-with-system-utilities-binaries">
+<h1>Support for interaction with system utilities/binaries</h1>
+<p>Currently, the py lib offers two ways to interact with
+system executables. <tt class="docutils literal">py.process.cmdexec()</tt> invokes
+the shell in order to execute a string.  The other
+one, <tt class="docutils literal">py.path.local</tt>'s 'sysexec()' method lets you
+directly execute a binary.</p>
+<p>Both approaches will raise an exception in case of a return-
+code other than 0 and otherwise return the stdout-output
+of the child process.</p>
+<div class="section" id="the-shell-based-approach">
+<h2>The shell based approach</h2>
+<p>You can execute a command via your system shell
+by doing something like:</p>
+<pre class="literal-block">
+out = py.process.cmdexec('ls -v')
+</pre>
+<p>However, the <tt class="docutils literal">cmdexec</tt> approach has a few shortcomings:</p>
+<ul class="simple">
+<li>it relies on the underlying system shell</li>
+<li>it neccessitates shell-escaping for expressing arguments</li>
+<li>it does not easily allow to &quot;fix&quot; the binary you want to run.</li>
+<li>it only allows to execute executables from the local
+filesystem</li>
+</ul>
+</div>
+<div class="section" id="local-paths-have-sysexec">
+<span id="sysexec"></span><h2>local paths have <tt class="docutils literal">sysexec</tt></h2>
+<p>In order to synchronously execute an executable file you
+can use <tt class="docutils literal">sysexec</tt>:</p>
+<pre class="literal-block">
+binsvn.sysexec('ls', 'http://codespeak.net/svn')
+</pre>
+<p>where <tt class="docutils literal">binsvn</tt> is a path that points to the <tt class="docutils literal">svn</tt> commandline
+binary. Note that this function does not offer any shell-escaping
+so you have to pass in already separated arguments.</p>
+</div>
+<div class="section" id="finding-an-executable-local-path">
+<h2>finding an executable local path</h2>
+<p>Finding an executable is quite different on multiple platforms.
+Currently, the <tt class="docutils literal">PATH</tt> environment variable based search on
+unix platforms is supported:</p>
+<pre class="literal-block">
+py.path.local.sysfind('svn')
+</pre>
+<p>which returns the first path whose <tt class="docutils literal">basename</tt> matches <tt class="docutils literal">svn</tt>.
+In principle, <cite>sysfind</cite> deploys platform specific algorithms
+to perform the search.  On Windows, for example, it may look
+at the registry (XXX).</p>
+<p>To make the story complete, we allow to pass in a second <tt class="docutils literal">checker</tt>
+argument that is called for each found executable.  For example, if
+you have multiple binaries available you may want to select the
+right version:</p>
+<pre class="literal-block">
+def mysvn(p):
+    &quot;&quot;&quot; check that the given svn binary has version 1.1. &quot;&quot;&quot;
+    line = p.execute('--version'').readlines()[0]
+    if line.find('version 1.1'):
+        return p
+binsvn = py.path.local.sysfind('svn', checker=mysvn)
+</pre>
+</div>
+</div>
+<div class="section" id="cross-python-version-compatibility-helpers">
+<h1>Cross-Python Version compatibility helpers</h1>
+<p>The <tt class="docutils literal">py.builtin</tt> namespace provides a number of helpers that help to write python code compatible across Python interpreters, mainly Python2 and Python3.  Type <tt class="docutils literal">help(py.builtin)</tt> on a Python prompt for a the selection of builtins.</p>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7597274-3");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body></html>
