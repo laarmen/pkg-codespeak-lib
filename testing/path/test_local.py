@@ -1,4 +1,5 @@
 import py
+import pytest
 import sys
 from py.path import local
 import common
@@ -14,7 +15,7 @@ skiponwin32 = py.test.mark.skipif(
 
 def pytest_funcarg__path1(request):
     def setup():
-        path1 = request.config.mktemp("path1")
+        path1 = request.getfuncargvalue("tmpdir")
         common.setuptestfs(path1)
         return path1
     def teardown(path1):
@@ -280,6 +281,14 @@ class TestExecution:
             if i>=3:
                 assert not numdir.new(ext=str(i-3)).check()
 
+    def test_make_numbered_dir_NotImplemented_Error(self, tmpdir, monkeypatch):
+        def notimpl(x, y):
+            raise NotImplementedError(42)
+        monkeypatch.setattr(py.std.os, 'symlink', notimpl)
+        x = tmpdir.make_numbered_dir(rootdir=tmpdir, lock_timeout=0)
+        assert x.relto(tmpdir)
+        assert x.check()
+
     def test_locked_make_numbered_dir(self, tmpdir):
         for i in range(10):
             numdir = local.make_numbered_dir(prefix='base2.', rootdir=tmpdir,
@@ -303,6 +312,18 @@ class TestImport:
         obj = path1.join('execfile.py').pyimport()
         assert obj.x == 42
         assert obj.__name__ == 'execfile'
+
+    def test_pyimport_renamed_dir_creates_mismatch(self, tmpdir):
+        p = tmpdir.ensure("a", "test_x123.py")
+        p.pyimport()
+        tmpdir.join("a").move(tmpdir.join("b"))
+        pytest.raises(tmpdir.ImportMismatchError,
+            lambda: tmpdir.join("b", "test_x123.py").pyimport())
+
+    def test_pyimport_messy_name(self, tmpdir):
+        # http://bitbucket.org/hpk42/py-trunk/issue/129
+        path = tmpdir.ensure('foo__init__.py')
+        obj = path.pyimport()
 
     def test_pyimport_dir(self, tmpdir):
         p = tmpdir.join("hello_123")
@@ -371,6 +392,16 @@ class TestImport:
         assert orig == p
         assert issubclass(pseudopath.ImportMismatchError, ImportError)
 
+    def test_issue131_pyimport_on__init__(self, tmpdir):
+        # __init__.py files may be namespace packages, and thus the
+        # __file__ of an imported module may not be ourselves
+        # see issue
+        p1 = tmpdir.ensure("proja", "__init__.py")
+        p2 = tmpdir.ensure("sub", "proja", "__init__.py")
+        m1 = p1.pyimport()
+        m2 = p2.pyimport()
+        assert m1 == m2
+
 def test_pypkgdir(tmpdir):
     pkg = tmpdir.ensure('pkg1', dir=1)
     pkg.ensure("__init__.py")
@@ -405,6 +436,15 @@ def test_samefile(tmpdir):
     assert tmpdir.samefile(tmpdir)
     p = tmpdir.ensure("hello")
     assert p.samefile(p)
+    old = p.dirpath().chdir()
+    try:
+        assert p.samefile(p.basename)
+    finally:
+        old.chdir()
+    if sys.platform == "win32":
+        p1 = p.__class__(str(p).lower())
+        p2 = p.__class__(str(p).upper())
+        assert p1.samefile(p2)
 
 def test_mkdtemp_rootdir(tmpdir):
     dtmp = local.mkdtemp(rootdir=tmpdir)

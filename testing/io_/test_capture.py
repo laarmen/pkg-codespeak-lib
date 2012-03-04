@@ -92,6 +92,18 @@ def test_dupfile(tmpfile):
     assert "01234" in repr(s)
     tmpfile.close()
 
+def lsof_check(func):
+    pid = os.getpid()
+    try:
+        out = py.process.cmdexec("lsof -p %d" % pid)
+    except py.process.cmdexec.Error:
+        py.test.skip("could not run 'lsof'")
+    func()
+    out2 = py.process.cmdexec("lsof -p %d" % pid)
+    len1 = len([x for x in out.split("\n") if "REG" in x])
+    len2 = len([x for x in out2.split("\n") if "REG" in x])
+    assert len2 < len1 + 3, out2
+
 class TestFDCapture:
     pytestmark = needsdup
 
@@ -125,16 +137,7 @@ class TestFDCapture:
             self.test_simple(tmpfile)
 
     def test_simple_many_check_open_files(self, tmpfile):
-        pid = os.getpid()
-        try:
-            out = py.process.cmdexec("lsof -p %d" % pid)
-        except py.process.cmdexec.Error:
-            py.test.skip("could not run 'lsof'")
-        self.test_simple_many(tmpfile)
-        out2 = py.process.cmdexec("lsof -p %d" % pid)
-        len1 = len([x for x in out.split("\n") if "REG" in x])
-        len2 = len([x for x in out2.split("\n") if "REG" in x])
-        assert len2 < len1 + 3, out2
+        lsof_check(lambda: self.test_simple_many(tmpfile))
 
     def test_simple_fail_second_start(self, tmpfile):
         fd = tmpfile.fileno()
@@ -210,6 +213,12 @@ class TestStdCapture:
             out, err = cap.reset()
         assert err == "error2"
 
+    def test_capturing_readouterr_unicode(self):
+        cap = self.getcapture()
+        print ("hx\xc4\x85\xc4\x87")
+        out, err = cap.readouterr()
+        assert out == py.builtin._totext("hx\xc4\x85\xc4\x87\n", "utf8")
+
     def test_capturing_mixed(self):
         cap = self.getcapture(mixed=True)
         sys.stdout.write("hello ")
@@ -219,12 +228,11 @@ class TestStdCapture:
         assert out.strip() == "hello world."
         assert not err
 
-    def test_capturing_twice_error(self):
+    def test_reset_twice_error(self):
         cap = self.getcapture()
         print ("hello")
         out, err = cap.reset()
-        print ("world")
-        out2, err = cap.reset()
+        py.test.raises(ValueError, cap.reset)
         assert out == "hello\n"
         assert not err
 
@@ -342,6 +350,13 @@ class TestStdCaptureFD(TestStdCapture):
         assert out.startswith("3")
         assert err.startswith("4")
 
+    def test_many(self, capfd):
+        def f():
+            for i in range(10):
+                cap = py.io.StdCaptureFD()
+                cap.reset()
+        lsof_check(f)
+
 class TestStdCaptureFDNotNow(TestStdCaptureFD):
     pytestmark = needsdup
 
@@ -385,7 +400,6 @@ def test_capture_not_started_but_reset():
     capsys = py.io.StdCapture(now=False)
     capsys.done()
     capsys.done()
-    capsys.reset()
     capsys.reset()
 
 @needsdup
