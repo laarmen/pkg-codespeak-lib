@@ -1,31 +1,31 @@
 Metadata-Version: 1.0
 Name: py
-Version: 1.3.4
-Summary: py.test and pylib: rapid testing and development utils.
+Version: 1.4.7
+Summary: library with cross-python path, ini-parsing, io, code, log facilities
 Home-page: http://pylib.org
 Author: holger krekel, Guido Wesdorp, Carl Friedrich Bolz, Armin Rigo, Maciej Fijalkowski & others
 Author-email: holger at merlinux.eu
 License: MIT license
-Description: 
-        py.test and pylib: rapid testing and development utils
+Description: The py lib is a Python development support library featuring
+        the following tools and modules:
         
-        - `py.test`_: cross-project testing tool with many advanced features
-        - `py.path`_: path abstractions over local and subversion files
-        - `py.code`_: dynamic code compile and traceback printing support
+        * py.path:  uniform local and svn path objects
+        * py.apipkg:  explicit API control and lazy-importing
+        * py.iniconfig:  easy parsing of .ini files
+        * py.code: dynamic code generation and introspection
+        * py.path:  uniform local and svn path objects
         
-        Platforms: Linux, Win32, OSX
+        NOTE: prior to the 1.4 release this distribution used to
+        contain py.test which is now its own package, see http://pytest.org
         
-        Interpreters: Python versions 2.4 through to 3.2, Jython 2.5.1 and PyPy
+        For questions and more information please visit http://pylib.org
         
-        Bugs and issues: http://bitbucket.org/hpk42/py-trunk/issues/
+        Bugs and issues: http://bitbucket.org/hpk42/pylib/issues/
         
         Mailing lists and more contact points: http://pylib.org/contact.html
         
-        .. _`py.test`: http://pytest.org
-        .. _`py.path`: http://pylib.org/path.html
-        .. _`py.code`: http://pylib.org/code.html
+        (c) Holger Krekel and others, 2004-2011
         
-        (c) Holger Krekel and others, 2004-2010
         
 Platform: unix
 Platform: linux

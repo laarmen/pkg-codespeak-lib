@@ -157,7 +157,8 @@ class TracebackEntry(object):
         return self.exprinfo
 
     def getfirstlinesource(self):
-        return self.frame.code.firstlineno
+        # on Jython this firstlineno can be -1 apparently
+        return max(self.frame.code.firstlineno, 0)
 
     def getsource(self):
         """ return failing source code. """
@@ -168,7 +169,7 @@ class TracebackEntry(object):
         end = self.lineno
         try:
             _, end = source.getstatementrange(end)
-        except IndexError:
+        except (IndexError, ValueError):
             end = self.lineno + 1
         # heuristic to stop displaying source on e.g.
         #   if something:  # assume this causes a NameError
@@ -282,7 +283,11 @@ class Traceback(list):
         """
         cache = {}
         for i, entry in enumerate(self):
-            key = entry.frame.code.path, entry.lineno
+            # id for the code.raw is needed to work around
+            # the strange metaprogramming in the decorator lib from pypi
+            # which generates code objects that have hash/value equality
+            #XXX needs a test
+            key = entry.frame.code.path, id(entry.frame.code.raw), entry.lineno
             #print "checking for recursion at", key
             l = cache.setdefault(key, [])
             if l:
@@ -309,7 +314,7 @@ class ExceptionInfo(object):
         #     ExceptionInfo-like classes may have different attributes.
         if tup is None:
             tup = sys.exc_info()
-            if exprinfo is None and isinstance(tup[1], py.code._AssertionError):
+            if exprinfo is None and isinstance(tup[1], AssertionError):
                 exprinfo = getattr(tup[1], 'msg', None)
                 if exprinfo is None:
                     exprinfo = str(tup[1])
@@ -356,14 +361,16 @@ class ExceptionInfo(object):
             showlocals: show locals per traceback entry
             style: long|short|no|native traceback style
             tbfilter: hide entries (where __tracebackhide__ is true)
+
+            in case of style==native, tbfilter and showlocals is ignored.
         """
         if style == 'native':
-            import traceback
-            return ''.join(traceback.format_exception(
-                self.type,
-                self.value,
-                self.traceback[0]._rawentry,
-                ))
+            return ReprExceptionInfo(ReprTracebackNative(
+                py.std.traceback.format_exception(
+                    self.type,
+                    self.value,
+                    self.traceback[0]._rawentry,
+                )), self._getreprcrash())
 
         fmt = FormattedExcinfo(showlocals=showlocals, style=style,
             abspath=abspath, tbfilter=tbfilter, funcargs=funcargs)
@@ -461,7 +468,7 @@ class FormattedExcinfo(object):
     def repr_locals(self, locals):
         if self.showlocals:
             lines = []
-            keys = list(locals)
+            keys = [loc for loc in locals if loc[0] != "@"]
             keys.sort()
             for name in keys:
                 value = locals[name]
@@ -515,7 +522,10 @@ class FormattedExcinfo(object):
 
     def _makepath(self, path):
         if not self.abspath:
-            np = py.path.local().bestrelpath(path)
+            try:
+                np = py.path.local().bestrelpath(path)
+            except OSError:
+                return path
             if len(np) < len(str(path)):
                 path = np
         return path
@@ -603,6 +613,19 @@ class ReprTraceback(TerminalRepr):
             entry.toterminal(tw)
         if self.extraline:
             tw.line(self.extraline)
+
+class ReprTracebackNative(ReprTraceback):
+    def __init__(self, tblines):
+        self.style = "native"
+        self.reprentries = [ReprEntryNative(tblines)]
+        self.extraline = None
+
+class ReprEntryNative(TerminalRepr):
+    def __init__(self, tblines):
+        self.lines = tblines
+
+    def toterminal(self, tw):
+        tw.write("".join(self.lines))
 
 class ReprEntry(TerminalRepr):
     localssep = "_ "
@@ -708,11 +731,19 @@ def unpatch_builtins(assertion=True, compile=True):
     if compile:
         py.builtin.builtins.compile = oldbuiltins['compile'].pop()
 
-def getrawcode(obj):
+def getrawcode(obj, trycall=True):
     """ return code object for given function. """
-    obj = getattr(obj, 'im_func', obj)
-    obj = getattr(obj, 'func_code', obj)
-    obj = getattr(obj, 'f_code', obj)
-    obj = getattr(obj, '__code__', obj)
-    return obj
+    try:
+        return obj.__code__
+    except AttributeError:
+        obj = getattr(obj, 'im_func', obj)
+        obj = getattr(obj, 'func_code', obj)
+        obj = getattr(obj, 'f_code', obj)
+        obj = getattr(obj, '__code__', obj)
+        if trycall and not hasattr(obj, 'co_firstlineno'):
+            if hasattr(obj, '__call__') and not py.std.inspect.isclass(obj):
+                x = getrawcode(obj.__call__, trycall=False)
+                if hasattr(x, 'co_firstlineno'):
+                    return x
+        return obj
 

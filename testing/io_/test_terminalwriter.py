@@ -1,6 +1,8 @@
 import py
 import os, sys
 from py._io import terminalwriter
+import codecs
+import pytest
 
 def test_get_terminal_width():
     x = py.io.get_terminal_width
@@ -61,6 +63,11 @@ def test_terminalwriter_dumb_term_no_markup(monkeypatch):
     finally:
         monkeypatch.undo()
 
+def test_terminalwriter_file_unicode(tmpdir):
+    f = py.std.codecs.open(str(tmpdir.join("xyz")), "wb", "utf8")
+    tw = py.io.TerminalWriter(file=f)
+    assert tw.encoding == "utf8"
+
 def test_unicode_encoding():
     msg = py.builtin._totext('b\u00f6y', 'utf8')
     for encoding in 'utf8', 'latin1':
@@ -79,10 +86,12 @@ class TestTerminalWriter:
         if request.param == "path":
             tmpdir = request.getfuncargvalue("tmpdir")
             p = tmpdir.join("tmpfile")
-            tw = py.io.TerminalWriter(p.open('w+'))
+            f = codecs.open(str(p), 'w+', encoding='utf8')
+            tw = py.io.TerminalWriter(f)
             def getlines():
                 tw._file.flush()
-                return p.open('r').readlines()
+                return codecs.open(str(p), 'r',
+                    encoding='utf8').readlines()
         elif request.param == "stringio":
             tw = py.io.TerminalWriter(stringio=True)
             def getlines():
@@ -154,6 +163,26 @@ class TestTerminalWriter:
         tw.sep("-", "hello")
         l = tw.getlines()
         assert len(l[0]) == len(l[1])
+
+    def test_reline(self, tw):
+        tw.line("hello")
+        tw.hasmarkup = False
+        pytest.raises(ValueError, lambda: tw.reline("x"))
+        tw.hasmarkup = True
+        tw.reline("0 1 2")
+        l = "".join(tw.getlines()).split("\n")
+        assert len(l) == 2
+        tw.reline("0 1 3")
+        l = "".join(tw.getlines()).split("\n")
+        assert len(l) == 2
+        assert l[1].endswith("\r0 1 3")
+        tw.line("something")
+        l = "".join(tw.getlines()).split("\n")
+        assert len(l) == 4
+        assert l[-1] == ""
+        out = "\n".join(l)
+        assert out.endswith("\nsomething\n")
+
 
 
 def test_attr_hasmarkup():
