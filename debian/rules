@@ -1,24 +1,11 @@
 #!/usr/bin/make -f
 
-DOCBOOK_MANPAGES=$(wildcard debian/manpages/*.xml)
-MANPAGES=$(patsubst %.xml,%.1, $(DOCBOOK_MANPAGES))
-
 %:
 	dh $@
 
-%.1: %.xml
-	xsltproc -''-nonet -o $@ /usr/share/sgml/docbook/stylesheet/xsl/nwalsh/manpages/docbook.xsl $<
-
-override_dh_auto_build: $(MANPAGES)
-	dh_auto_build
-
 override_dh_auto_clean:
-	rm -f debian/manpages/*.1 py.egg-info/SOURCES.txt
+	rm -rf py.egg-info/
 	dh_auto_clean
-
-override_dh_auto_install:
-	dh_auto_install
-	rm -f debian/python-py/usr/bin/*-2.*
 
 override_dh_pysupport:
 	dh_pysupport
