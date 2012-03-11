@@ -3,14 +3,13 @@ codespeak-lib (1.4.7-1) UNRELEASED; urgency=low
   [ Chris Lamb ]
   * Bump Standards-Version to 3.9.2.
   * Use dh_python2.
+  * Drop unnecessary Build-Depends
 
   [ Simon Chopin ]
   * New upstream release. (Closes: #620988)
   * Fix the debian/watch file to use the .zip file extension.
   * Remove all the manpages since the binaries are now part of separate
     projects.
-
-  [ Chris Lamb ]
 
  -- Simon Chopin <chopin.simon@gmail.com>  Sun, 04 Mar 2012 18:38:10 +0100
 
