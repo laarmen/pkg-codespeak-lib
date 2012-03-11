@@ -36,6 +36,24 @@ except NameError:
             return self.remaining
 
 try:
+    any = any
+except NameError:
+    def any(iterable):
+        for x in iterable:
+            if x:
+                return True
+        return False
+
+try:
+    all = all
+except NameError:
+    def all(iterable):
+        for x in iterable:
+            if not x:
+                return False
+        return True
+
+try:
     sorted = sorted
 except NameError:
     builtin_cmp = cmp # need to use cmp as keyword arg
@@ -124,7 +142,7 @@ if sys.version_info >= (3, 0):
             del back
         elif locs is None:
             locs = globs
-        fp = open(fn, "rb")
+        fp = open(fn, "r")
         try:
             source = fp.read()
         finally:

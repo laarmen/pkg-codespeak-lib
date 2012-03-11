@@ -1,13 +1,7 @@
-import py
+import pytest, py
 
 def exvalue():
     return py.std.sys.exc_info()[1]
-
-def setup_module(mod):
-    py.code.patch_builtins(assertion=True, compile=False)
-
-def teardown_module(mod):
-    py.code.unpatch_builtins(assertion=True, compile=False)
 
 def f():
     return 2
@@ -28,17 +22,14 @@ def test_assert_with_explicit_message():
         assert e.msg == 'hello'
 
 def test_assert_within_finally():
-    class A:
-        def f():
-            pass
-    excinfo = py.test.raises(TypeError, """
+    excinfo = py.test.raises(ZeroDivisionError, """
         try:
-            A().f()
+            1/0
         finally:
             i = 42
     """)
     s = excinfo.exconly()
-    assert s.find("takes no argument") != -1
+    assert py.std.re.search("division.+by zero", s) is not None
 
     #def g():
     #    A.f()
@@ -80,6 +71,40 @@ def test_is():
         e = exvalue()
         s = str(e)
         assert s.startswith("assert 1 is 2")
+
+
+@py.test.mark.skipif("sys.version_info < (2,6)")
+def test_attrib():
+    class Foo(object):
+        b = 1
+    i = Foo()
+    try:
+        assert i.b == 2
+    except AssertionError:
+        e = exvalue()
+        s = str(e)
+        assert s.startswith("assert 1 == 2")
+
+@py.test.mark.skipif("sys.version_info < (2,6)")
+def test_attrib_inst():
+    class Foo(object):
+        b = 1
+    try:
+        assert Foo().b == 2
+    except AssertionError:
+        e = exvalue()
+        s = str(e)
+        assert s.startswith("assert 1 == 2")
+
+def test_len():
+    l = list(range(42))
+    try:
+        assert len(l) == 100
+    except AssertionError:
+        e = exvalue()
+        s = str(e)
+        assert s.startswith("assert 42 == 100")
+        assert "where 42 = len([" in s
 
 def test_assert_non_string_message():
     class A:
@@ -217,3 +242,82 @@ def test_underscore_api():
     py.code._AssertionError
     py.code._reinterpret_old # used by pypy
     py.code._reinterpret
+
+@py.test.mark.skipif("sys.version_info < (2,6)")
+def test_assert_customizable_reprcompare(monkeypatch):
+    util = pytest.importorskip("_pytest.assertion.util")
+    monkeypatch.setattr(util, '_reprcompare', lambda *args: 'hello')
+    try:
+        assert 3 == 4
+    except AssertionError:
+        e = exvalue()
+        s = str(e)
+        assert "hello" in s
+
+def test_assert_long_source_1():
+    try:
+        assert len == [
+            (None, ['somet text', 'more text']),
+        ]
+    except AssertionError:
+        e = exvalue()
+        s = str(e)
+        assert 're-run' not in s
+        assert 'somet text' in s
+
+def test_assert_long_source_2():
+    try:
+        assert(len == [
+            (None, ['somet text', 'more text']),
+        ])
+    except AssertionError:
+        e = exvalue()
+        s = str(e)
+        assert 're-run' not in s
+        assert 'somet text' in s
+
+def test_assert_raise_alias(testdir):
+    testdir.makepyfile("""
+    import sys
+    EX = AssertionError
+    def test_hello():
+        raise EX("hello"
+            "multi"
+            "line")
+    """)
+    result = testdir.runpytest()
+    result.stdout.fnmatch_lines([
+        "*def test_hello*",
+        "*raise EX*",
+        "*1 failed*",
+    ])
+
+
+@pytest.mark.skipif("sys.version_info < (2,5)")
+def test_assert_raise_subclass():
+    class SomeEx(AssertionError):
+        def __init__(self, *args):
+            super(SomeEx, self).__init__()
+    try:
+        raise SomeEx("hello")
+    except AssertionError:
+        s = str(exvalue())
+        assert 're-run' not in s
+        assert 'could not determine' in s
+
+def test_assert_raises_in_nonzero_of_object_pytest_issue10():
+    class A(object):
+        def __nonzero__(self):
+            raise ValueError(42)
+        def __lt__(self, other):
+            return A()
+        def __repr__(self):
+            return "<MY42 object>"
+    def myany(x):
+        return True
+    try:
+        assert not(myany(A() < 0))
+    except AssertionError:
+        e = exvalue()
+        s = str(e)
+        assert "<MY42 object> < 0" in s

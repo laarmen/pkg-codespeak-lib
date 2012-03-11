@@ -36,7 +36,7 @@ class Checkers:
         return self.path.relto(arg)
 
     def fnmatch(self, arg):
-        return FNMatcher(arg)(self.path)
+        return self.path.fnmatch(arg)
 
     def endswith(self, arg):
         return str(self.path).endswith(arg)
@@ -90,6 +90,11 @@ class PathBase(object):
         """ basename part of path. """
         return self._getbyspec('basename')[0]
     basename = property(basename, None, None, basename.__doc__)
+
+    def dirname(self):
+        """ dirname part of path. """
+        return self._getbyspec('dirname')[0]
+    dirname = property(dirname, None, None, dirname.__doc__)
 
     def purebasename(self):
         """ pure base name of the path."""
@@ -156,21 +161,44 @@ newline will be removed from the end of each line. """
         return repr(str(self))
 
     def check(self, **kw):
-        """ check a path for existence, or query its properties
+        """ check a path for existence and properties.
 
-            without arguments, this returns True if the path exists (on the
-            filesystem), False if not
+            Without arguments, return True if the path exists, otherwise False.
 
-            with (keyword only) arguments, the object compares the value
-            of the argument with the value of a property with the same name
-            (if it has one, else it raises a TypeError)
+            valid checkers::
 
-            when for example the keyword argument 'ext' is '.py', this will
-            return True if self.ext == '.py', False otherwise
+                file=1    # is a file
+                file=0    # is not a file (may not even exist)
+                dir=1     # is a dir
+                link=1    # is a link
+                exists=1  # exists
+
+            You can specify multiple checker definitions, for example::
+                
+                path.check(file=1, link=1)  # a link pointing to a file
         """
         if not kw:
             kw = {'exists' : 1}
         return self.Checkers(self)._evaluate(kw)
+
+    def fnmatch(self, pattern):
+        """return true if the basename/fullname matches the glob-'pattern'.
+
+        valid pattern characters::
+
+            *       matches everything
+            ?       matches any single character
+            [seq]   matches any character in seq
+            [!seq]  matches any char not in seq
+
+        If the pattern contains a path-separator then the full path
+        is used for pattern matching and a '*' is prepended to the
+        pattern.
+
+        if the pattern doesn't contain a path-separator the pattern
+        is only matched against the basename.
+        """
+        return FNMatcher(pattern)(self)
 
     def relto(self, relpath):
         """ return a string which is the relative part of the path
@@ -263,7 +291,7 @@ newline will be removed from the end of each line. """
         except AttributeError:
             return str(self) < str(other)
 
-    def visit(self, fil=None, rec=None, ignore=NeverRaised):
+    def visit(self, fil=None, rec=None, ignore=NeverRaised, bf=False, sort=False):
         """ yields all paths below the current one
 
             fil is a filter (glob pattern or callable), if not matching the
@@ -275,26 +303,14 @@ newline will be removed from the end of each line. """
 
             ignore is an Exception class that is ignoredwhen calling dirlist()
             on any of the paths (by default, all exceptions are reported)
+
+            bf if True will cause a breadthfirst search instead of the
+            default depthfirst. Default: False
+
+            sort if True will sort entries within each directory level.
         """
-        if isinstance(fil, str):
-            fil = FNMatcher(fil)
-        if rec:
-            if isinstance(rec, str):
-                rec = fnmatch(fil)
-            elif not hasattr(rec, '__call__'):
-                rec = None
-        try:
-            entries = self.listdir()
-        except ignore:
-            return
-        dirs = [p for p in entries
-                    if p.check(dir=1) and (rec is None or rec(p))]
-        for subdir in dirs:
-            for p in subdir.visit(fil=fil, rec=rec, ignore=ignore):
-                yield p
-        for p in entries:
-            if fil is None or fil(p):
-                yield p
+        for x in Visitor(fil, rec, ignore, bf, sort).gen(self):
+            yield x
 
     def _sortlist(self, res, sort):
         if sort:
@@ -307,30 +323,50 @@ newline will be removed from the end of each line. """
         """ return True if other refers to the same stat object as self. """
         return self.strpath == str(other)
 
+class Visitor:
+    def __init__(self, fil, rec, ignore, bf, sort):
+        if isinstance(fil, str):
+            fil = FNMatcher(fil)
+        if isinstance(rec, str):
+            self.rec = fnmatch(fil)
+        elif not hasattr(rec, '__call__') and rec:
+            self.rec = lambda path: True
+        else:
+            self.rec = rec
+        self.fil = fil
+        self.ignore = ignore
+        self.breadthfirst = bf
+        self.optsort = sort and sorted or (lambda x: x)
+
+    def gen(self, path):
+        try:
+            entries = path.listdir()
+        except self.ignore:
+            return
+        rec = self.rec
+        dirs = self.optsort([p for p in entries
+                    if p.check(dir=1) and (rec is None or rec(p))])
+        if not self.breadthfirst:
+            for subdir in dirs:
+                for p in self.gen(subdir):
+                    yield p
+        for p in self.optsort(entries):
+            if self.fil is None or self.fil(p):
+                yield p
+        if self.breadthfirst:
+            for subdir in dirs:
+                for p in self.gen(subdir):
+                    yield p
+
 class FNMatcher:
     def __init__(self, pattern):
         self.pattern = pattern
     def __call__(self, path):
-        """return true if the basename/fullname matches the glob-'pattern'.
-
-        *       matches everything
-        ?       matches any single character
-        [seq]   matches any character in seq
-        [!seq]  matches any char not in seq
-
-        if the pattern contains a path-separator then the full path
-        is used for pattern matching and a '*' is prepended to the
-        pattern.
-
-        if the pattern doesn't contain a path-separator the pattern
-        is only matched against the basename.
-        """
         pattern = self.pattern
         if pattern.find(path.sep) == -1:
             name = path.basename
         else:
             name = str(path) # path.strpath # XXX svn?
             pattern = '*' + path.sep + pattern
-        from fnmatch import fnmatch
-        return fnmatch(name, pattern)
+        return py.std.fnmatch.fnmatch(name, pattern)
 

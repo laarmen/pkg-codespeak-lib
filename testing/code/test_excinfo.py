@@ -115,7 +115,7 @@ class TestTraceback_f_g_h:
     def test_traceback_cut_excludepath(self, testdir):
         p = testdir.makepyfile("def f(): raise ValueError")
         excinfo = py.test.raises(ValueError, "p.pyimport().f()")
-        basedir = py._pydir
+        basedir = py.path.local(py.test.__file__).dirpath()
         newtraceback = excinfo.traceback.cut(excludepath=basedir)
         for x in newtraceback:
             if hasattr(x, 'path'):
@@ -153,6 +153,25 @@ class TestTraceback_f_g_h:
         traceback = excinfo.traceback
         recindex = traceback.recursionindex()
         assert recindex is None
+
+    def test_traceback_messy_recursion(self):
+        #XXX: simplified locally testable version
+        decorator = py.test.importorskip('decorator').decorator
+
+        def log(f, *k, **kw):
+            print('%s %s' % (k, kw))
+            f(*k, **kw)
+        log = decorator(log)
+
+        def fail():
+            raise ValueError('')
+
+        fail = log(log(fail))
+
+        excinfo = py.test.raises(ValueError, fail)
+        assert excinfo.traceback.recursionindex() is None
+
+
 
     def test_traceback_getcrashentry(self):
         def i():
@@ -238,6 +257,23 @@ def test_excinfo_no_sourcecode():
     else:
         assert s == "  File '<string>':1 in <module>\n  ???\n"
 
+def test_excinfo_no_python_sourcecode(tmpdir):
+    #XXX: simplified locally testable version
+    tmpdir.join('test.txt').write("{{ h()}}:")
+
+    jinja2 = py.test.importorskip('jinja2')
+    loader = jinja2.FileSystemLoader(str(tmpdir))
+    env = jinja2.Environment(loader=loader)
+    template = env.get_template('test.txt')
+    excinfo = py.test.raises(ValueError,
+                             template.render, h=h)
+    for item in excinfo.traceback:
+        print(item) #XXX: for some reason jinja.Template.render is printed in full
+        item.source # shouldnt fail
+        if item.path.basename == 'test.txt':
+            assert str(item.source) == '{{ h()}}:'
+
+
 def test_entrysource_Queue_example():
     try:
         queue.Queue().get(timeout=0.001)
@@ -296,15 +332,11 @@ class TestFormattedExcinfo:
     def test_repr_source_excinfo(self):
         """ check if indentation is right """
         pr = FormattedExcinfo()
-        py.code.patch_builtins()
-        try:
-            excinfo = self.excinfo_from_exec("""
+        excinfo = self.excinfo_from_exec("""
                 def f():
                     assert 0
                 f()
-            """)
-        finally:
-            py.code.unpatch_builtins()
+        """)
         pr = FormattedExcinfo()
         source = pr._getentrysource(excinfo.traceback[-1])
         lines = pr.get_source(source, 1, excinfo)
@@ -388,7 +420,7 @@ raise ValueError()
 
     def test_repr_local(self):
         p = FormattedExcinfo(showlocals=True)
-        loc = {'y': 5, 'z': 7, 'x': 3, '__builtins__': {}} # __builtins__}
+        loc = {'y': 5, 'z': 7, 'x': 3, '@x': 2, '__builtins__': {}}
         reprlocals = p.repr_locals(loc)
         assert reprlocals.lines
         assert reprlocals.lines[0] == '__builtins__ = <builtins>'
@@ -553,6 +585,22 @@ raise ValueError()
             assert repr.reprcrash.path.endswith("mod.py")
             assert repr.reprcrash.message == "ValueError: 0"
 
+    def test_repr_traceback_with_invalid_cwd(self, importasmod, monkeypatch):
+        mod = importasmod("""
+            def f(x):
+                raise ValueError(x)
+            def entry():
+                f(0)
+        """)
+        excinfo = py.test.raises(ValueError, mod.entry)
+
+        p = FormattedExcinfo()
+        def raiseos():
+            raise OSError(2)
+        monkeypatch.setattr(py.std.os, 'getcwd', raiseos)
+        assert p._makepath(__file__) == __file__
+        reprtb = p.repr_traceback(excinfo)
+
     def test_repr_excinfo_addouterr(self, importasmod):
         mod = importasmod("""
             def entry():
@@ -605,11 +653,7 @@ raise ValueError()
                 x = 1
                 assert x == 2
         """)
-        py.code.patch_builtins(assertion=True)
-        try:
-            excinfo = py.test.raises(AssertionError, mod.somefunc)
-        finally:
-            py.code.unpatch_builtins(assertion=True)
+        excinfo = py.test.raises(AssertionError, mod.somefunc)
 
         p = FormattedExcinfo()
         reprentry = p.repr_traceback_entry(excinfo.traceback[-1], excinfo)
@@ -707,9 +751,11 @@ raise ValueError()
             assert 0
         """)
         repr = excinfo.getrepr(style='native')
-        assert repr.startswith('Traceback (most recent call last):\n  File')
-        assert repr.endswith('\nAssertionError: assert 0\n')
-        assert 'exec (source.compile())' in repr
+        assert "assert 0" in str(repr.reprcrash)
+        s = str(repr)
+        assert s.startswith('Traceback (most recent call last):\n  File')
+        assert s.endswith('\nAssertionError: assert 0')
+        assert 'exec (source.compile())' in s
         # python 2.4 fails to get the source line for the assert
         if py.std.sys.version_info >= (2, 5):
-            assert repr.count('assert 0') == 2
+            assert s.count('assert 0') == 2

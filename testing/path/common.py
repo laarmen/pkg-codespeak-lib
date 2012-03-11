@@ -68,6 +68,10 @@ class CommonFSTests(object):
         assert newpath.check(basename='sampledir')
         assert newpath.basename, 'sampledir'
 
+    def test_dirname(self, path1):
+        newpath = path1.join('sampledir')
+        assert newpath.dirname == str(path1)
+
     def test_dirpath(self, path1):
         newpath = path1.join('sampledir')
         assert newpath.dirpath() == path1
@@ -98,7 +102,8 @@ class CommonFSTests(object):
 
     def test_fnmatch_file(self, path1):
         assert path1.join("samplefile").check(fnmatch='s*e')
-        assert path1.join("samplefile").check(notfnmatch='s*x')
+        assert path1.join("samplefile").fnmatch('s*e')
+        assert not path1.join("samplefile").fnmatch('s*x')
         assert not path1.join("samplefile").check(fnmatch='s*x')
 
     #def test_fnmatch_dir(self, path1):
@@ -283,18 +288,18 @@ class CommonFSTests(object):
     def test_relto_wrong_type(self, path1):
         py.test.raises(TypeError, "path1.relto(42)")
 
+    def test_load(self, path1):
+        p = path1.join('samplepickle')
+        obj = p.load()
+        assert type(obj) is dict
+        assert obj.get('answer',None) == 42
+
     def test_visit_filesonly(self, path1):
         l = []
         for i in path1.visit(lambda x: x.check(file=1)):
             l.append(i.relto(path1))
         assert not "sampledir" in l
         assert path1.sep.join(["sampledir", "otherfile"]) in l
-
-    def test_load(self, path1):
-        p = path1.join('samplepickle')
-        obj = p.load()
-        assert type(obj) is dict
-        assert obj.get('answer',None) == 42
 
     def test_visit_nodotfiles(self, path1):
         l = []
@@ -303,6 +308,28 @@ class CommonFSTests(object):
         assert "sampledir" in l
         assert path1.sep.join(["sampledir", "otherfile"]) in l
         assert not ".dotfile" in l
+
+    def test_visit_breadthfirst(self, path1):
+        l = []
+        for i in path1.visit(bf=True):
+            l.append(i.relto(path1))
+        for i, p in enumerate(l):
+            if path1.sep in p:
+                for j in range(i, len(l)):
+                    assert path1.sep in l[j]
+                break
+        else:
+            py.test.fail("huh")
+
+    def test_visit_sort(self, path1):
+        l = []
+        for i in path1.visit(bf=True, sort=True):
+            l.append(i.relto(path1))
+        for i, p in enumerate(l):
+            if path1.sep in p:
+                break
+        assert l[:i] == sorted(l[:i])
+        assert l[i:] == sorted(l[i:])
 
     def test_endswith(self, path1):
         def chk(p):

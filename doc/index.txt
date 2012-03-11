@@ -1,41 +1,43 @@
-py lib: testing and filesystem abstraction
-====================================================
+.. py documentation master file, created by
+   sphinx-quickstart on Thu Oct 21 08:30:10 2010.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-The ``py`` lib has several namespaces which help with automated testing,
-and with accessing filesystems.  Here is some documentation on the
-core namespaces:
+Welcome to py's documentation!
+=================================
 
-`py.test`_ write and deploy unit- and functional tests to multiple machines.
+see :ref:`CHANGELOG <changelog>` for latest changes.
 
-`py.code`_: generate code and use advanced introspection/traceback support.
+.. note::
+    
+   Since version 1.4, the testing tool "py.test" is part of its own `pytest distribution`_.
 
-`py.path`_: use path objects to transparently access local and svn filesystems.
+.. _`pytest distribution`: http://pytest.org
 
-Other (minor) support functionality
-===================================
+Contents:
 
-`py lib scripts`_ to make python development easier.
+.. toctree::
 
-`py.xml`_ for generating in-memory xml/html object trees
+   install
+   path
+   code
+   io
+   log
+   xml
+   misc
 
-`py.io`_: Helper Classes for Capturing of Input/Output
+   :maxdepth: 2
 
-`py.log`_: an alpha document about the ad-hoc logging facilities
+.. toctree::
+    :hidden:
 
-`miscellaneous features`_ describes some small but nice py lib features.
+    announce/release-2.0.0
+    changelog
 
+Indices and tables
+==================
 
-.. _`PyPI project page`: http://pypi.python.org/pypi/py/
-
-For the latest Release, see `PyPI project page`_
-
-.. _`py-dev at codespeak net`: http://codespeak.net/mailman/listinfo/py-dev
-.. _`py.log`: log.html
-.. _`py.io`: io.html
-.. _`py.path`: path.html
-.. _`py.code`: code.html
-.. _`py.test`: test/index.html
-.. _`py lib scripts`: bin.html
-.. _`py.xml`: xml.html
-.. _`miscellaneous features`: misc.html
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
