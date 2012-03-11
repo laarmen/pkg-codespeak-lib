@@ -6,7 +6,3 @@
 override_dh_auto_clean:
 	rm -rf py.egg-info/
 	dh_auto_clean
-
-override_dh_pysupport:
-	dh_pysupport
-	rm -rf debian/python-py/usr/share/pyshared/py/LICENSE

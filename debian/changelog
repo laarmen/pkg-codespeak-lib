@@ -4,6 +4,7 @@ codespeak-lib (1.4.7-1) UNRELEASED; urgency=low
   * Bump Standards-Version to 3.9.2.
   * Use dh_python2.
   * Drop unnecessary Build-Depends
+  * Drop pysupport override in debian/rules
 
   [ Simon Chopin ]
   * New upstream release. (Closes: #620988)
