@@ -68,10 +68,6 @@ class PosixPath(common.PathBase):
             target = self.sep.join(('..', )*n + (relsource, ))
             py.error.checked_call(os.symlink, target, self.strpath)
 
-    def samefile(self, other):
-        """ return True if other refers to the same stat object as self. """
-        return py.error.checked_call(os.path.samefile, str(self), str(other))
-
 def getuserid(user):
     import pwd
     if not isinstance(user, int):
@@ -160,6 +156,18 @@ class LocalPath(FSBase):
     def __lt__(self, other):
         return str(self) < str(other)
 
+    def samefile(self, other):
+        """ return True if 'other' references the same file as 'self'.
+        """
+        if not isinstance(other, py.path.local):
+            other = os.path.abspath(str(other))
+        if self == other:
+            return True
+        if iswin32:
+            return False # ther is no samefile
+        return py.error.checked_call(
+                os.path.samefile, str(self), str(other))
+
     def remove(self, rec=1, ignore_errors=False):
         """ remove a file or directory (or a directory tree if rec=1).
         if ignore_errors is True, errors while removing directories will
@@ -203,14 +211,14 @@ class LocalPath(FSBase):
 
     def new(self, **kw):
         """ create a modified version of this path.
-            the following keyword arguments modify various path parts:
+            the following keyword arguments modify various path parts::
 
               a:/some/path/to/a/file.ext
-              ||                            drive
-                |-------------|             dirname
-                                |------|    basename
-                                |--|        purebasename
-                                    |--|    ext
+              xx                           drive
+              xxxxxxxxxxxxxxxxx            dirname
+                                xxxxxxxx   basename
+                                xxxx       purebasename
+                                     xxx   ext
         """
         obj = object.__new__(self.__class__)
         drive, dirname, basename, purebasename,ext = self._getbyspec(
@@ -229,24 +237,17 @@ class LocalPath(FSBase):
                     ext = '.' + ext
             kw['basename'] = pb + ext
 
-        kw.setdefault('drive', drive)
-        kw.setdefault('dirname', dirname)
+        if ('dirname' in kw and not kw['dirname']):
+            kw['dirname'] = drive
+        else:
+            kw.setdefault('dirname', dirname)
         kw.setdefault('sep', self.sep)
         obj.strpath = os.path.normpath(
-            "%(drive)s%(dirname)s%(sep)s%(basename)s" % kw)
+            "%(dirname)s%(sep)s%(basename)s" % kw)
         return obj
 
     def _getbyspec(self, spec):
-        """ return a sequence of specified path parts.  'spec' is
-            a comma separated string containing path part names.
-            according to the following convention:
-            a:/some/path/to/a/file.ext
-            ||                            drive
-              |-------------|             dirname
-                              |------|    basename
-                              |--|        purebasename
-                                  |--|    ext
-        """
+        """ see new for what 'spec' can be. """
         res = []
         parts = self.strpath.split(self.sep)
 
@@ -256,7 +257,7 @@ class LocalPath(FSBase):
             if name == 'drive':
                 append(parts[0])
             elif name == 'dirname':
-                append(self.sep.join(['']+parts[1:-1]))
+                append(self.sep.join(parts[:-1]))
             else:
                 basename = parts[-1]
                 if name == 'basename':
@@ -461,8 +462,8 @@ class LocalPath(FSBase):
         return self.strpath
 
     def pypkgpath(self, pkgname=None):
-        """ return the path's package path by looking for the given
-            pkgname.  If pkgname is None then look for the last
+        """ return the Python package path by looking for a
+            pkgname.  If pkgname is None look for the last
             directory upwards which still contains an __init__.py
             and whose basename is python-importable.
             Return None if a pkgpath can not be determined.
@@ -528,15 +529,23 @@ class LocalPath(FSBase):
                     self._prependsyspath(self.dirpath())
                 modname = self.purebasename
             mod = __import__(modname, None, None, ['__doc__'])
+            if self.basename == "__init__.py":
+                return mod # we don't check anything as we might
+                       # we in a namespace package ... too icky to check
             modfile = mod.__file__
             if modfile[-4:] in ('.pyc', '.pyo'):
                 modfile = modfile[:-1]
             elif modfile.endswith('$py.class'):
                 modfile = modfile[:-9] + '.py'
-            if modfile.endswith("__init__.py"):
+            if modfile.endswith(os.path.sep + "__init__.py"):
                 if self.basename != "__init__.py":
                     modfile = modfile[:-12]
-            if not self.samefile(modfile):
+
+            try:
+                issame = self.samefile(modfile)
+            except py.error.ENOENT:
+                issame = False
+            if not issame:
                 raise self.ImportMismatchError(modname, modfile, self)
             return mod
         else:
@@ -598,7 +607,7 @@ class LocalPath(FSBase):
                 else:
                     paths = [re.sub('%SystemRoot%', systemroot, path)
                              for path in paths]
-                tryadd = '', '.exe', '.com', '.bat' # XXX add more?
+                tryadd = [''] + os.environ['PATHEXT'].split(os.pathsep)
             else:
                 paths = py.std.os.environ['PATH'].split(':')
                 tryadd = ('',)
@@ -746,7 +755,7 @@ class LocalPath(FSBase):
             pass
         try:
             os.symlink(src, dest)
-        except (OSError, AttributeError): # AttributeError on win32
+        except (OSError, AttributeError, NotImplementedError):
             pass
 
         return udir
@@ -767,41 +776,6 @@ def copychunked(src, dest):
             fdest.close()
     finally:
         fsrc.close()
-
-def autopath(globs=None):
-    """ (deprecated) return the (local) path of the "current" file pointed to by globals or - if it is none - alternatively the callers frame globals.
-
-        the path will always point to a .py file  or to None.
-        the path will have the following payload:
-        pkgdir   is the last parent directory path containing __init__.py
-    """
-    py.log._apiwarn("1.1", "py.magic.autopath deprecated, "
-        "use py.path.local(__file__) and maybe pypkgpath/pyimport().")
-    if globs is None:
-        globs = sys._getframe(1).f_globals
-    try:
-        __file__ = globs['__file__']
-    except KeyError:
-        if not sys.argv[0]:
-            raise ValueError("cannot compute autopath in interactive mode")
-        __file__ = os.path.abspath(sys.argv[0])
-
-    ret = py.path.local(__file__)
-    if ret.ext in ('.pyc', '.pyo'):
-        ret = ret.new(ext='.py')
-    current = pkgdir = ret.dirpath()
-    while 1:
-        if current.join('__init__.py').check():
-            pkgdir = current
-            current = current.dirpath()
-            if pkgdir != current:
-                continue
-        elif str(current) not in sys.path:
-            sys.path.insert(0, str(current))
-        break
-    ret.pkgdir = pkgdir
-    return ret
-
 
 def isimportable(name):
     if name:

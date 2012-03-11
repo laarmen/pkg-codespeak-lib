@@ -2,15 +2,11 @@
 py.code: higher level python code and introspection objects
 ================================================================================
 
-The ``py.code`` part of the pylib contains some functionality to help
-dealing with Python code objects. Even though working with Python's internal
-code objects (as found on frames and callables) can be very powerful, it's
-usually also quite cumbersome, because the API provided by core Python is
-relatively low level and not very accessible.
-
-The ``py.code`` library tries to simplify accessing the code objects as well
-as creating them. There is a small set of interfaces a user needs to deal with,
-all nicely bundled together, and with a rich set of 'Pythonic' functionality.
+``py.code`` provides higher level APIs and objects for Code, Frame, Traceback,
+ExceptionInfo and source code construction.  The ``py.code`` library
+tries to simplify accessing the code objects as well as creating them.
+There is a small set of interfaces a user needs to deal with, all nicely
+bundled together, and with a rich set of 'Pythonic' functionality.
 
 Contents of the library
 =======================
@@ -46,6 +42,11 @@ A quick example::
   >>> str(c.source()).split('\n')[0]
   "def read(self, mode='r'):"
 
+.. autoclass:: py.code.Code
+    :members:
+    :inherited-members:
+
+
 ``py.code.Source``
 ---------------------
 
@@ -66,6 +67,9 @@ Example::
   >>> sub = s.getstatement(1) # get the statement starting at line 1
   >>> str(sub).strip() # XXX why is the strip() required?!?
   'print "foo"'
+
+.. autoclass:: py.code.Source
+    :members:
 
 
 ``py.code.Traceback``
@@ -92,6 +96,9 @@ Example::
   >>> str(first.statement).strip().startswith('raise ValueError')
   True
 
+.. autoclass:: py.code.Traceback
+    :members:
+
 ``py.code.Frame``
 --------------------
 
@@ -110,6 +117,9 @@ Example (using the 'first' TracebackItem instance created above)::
   True
   >>> [namevalue[0] for namevalue in frame.getargs()]
   ['cls', 'path']
+
+.. autoclass:: py.code.Frame
+    :members:
 
 ``py.code.ExceptionInfo``
 ----------------------------
@@ -131,4 +141,7 @@ Example::
   True
   >>> excinfo.exconly()
   "NameError: name 'foobar' is not defined"
+
+.. autoclass:: py.code.ExceptionInfo
+    :members:
 

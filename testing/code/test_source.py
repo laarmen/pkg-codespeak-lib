@@ -231,6 +231,16 @@ class TestSourceParsingAndCompiling:
         assert source.getstatementrange(5) == (0, 9)
 
     @py.test.mark.skipif("sys.version_info < (2,6)")
+    def test_getstatementrange_out_of_bounds_py3(self):
+        source = Source("if xxx:\n   from .collections import *")
+        r = source.getstatementrange(1)
+        assert r == (1,2)
+
+    def test_getstatementrange_with_syntaxerror_issue7(self):
+        source = Source(":")
+        py.test.raises(IndexError, lambda: source.getstatementrange(0))
+
+    @py.test.mark.skipif("sys.version_info < (2,6)")
     def test_compile_to_ast(self):
         import ast
         source = Source("x = 4")
@@ -348,7 +358,8 @@ def test_deindent():
     lines = deindent(source.splitlines())
     assert lines == ['', 'def f():', '    def g():', '        pass', '    ']
 
-@py.test.mark.xfail("sys.version_info[:2] != (2,7)")
+@py.test.mark.xfail("sys.version_info[:3] < (2,7,0) or "
+    "((3,0) <= sys.version_info[:2] < (3,2))")
 def test_source_of_class_at_eof_without_newline(tmpdir):
     # this test fails because the implicit inspect.getsource(A) below
     # does not return the "x = 1" last line.
@@ -422,3 +433,25 @@ def test_getfslineno():
     _, A_lineno = py.std.inspect.findsource(A)
     assert fspath.basename == "test_source.py"
     assert lineno == A_lineno
+
+    assert getfslineno(3) == ("", -1)
+    class B:
+        pass
+    B.__name__ = "B2"
+    assert getfslineno(B)[1] == -1
+
+def test_code_of_object_instance_with_call():
+    class A:
+        pass
+    py.test.raises(TypeError, lambda: py.code.Source(A()))
+    class WithCall:
+        def __call__(self):
+            pass
+
+    code = py.code.Code(WithCall())
+    assert 'pass' in str(code.source())
+
+    class Hello(object):
+        def __call__(self):
+            pass
+    py.test.raises(TypeError, lambda: py.code.Code(Hello))
