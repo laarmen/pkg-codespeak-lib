@@ -16,8 +16,7 @@ Depends: ${misc:Depends}, ${python3:Depends}, python3-pkg-resources
 Suggests: subversion, python-pytest, python-pytest-xdist
 Description: Advanced Python testing tool and networking lib
  The Codespeak py lib aims at supporting a decent Python development process
- addressing deployment, versioning and documentation perspectives. It
- includes:
+ addressing deployment, versioning and documentation perspectives. It includes:
  .
   * py.path: path abstractions over local and Subversion files
   * py.code: dynamic code compile and traceback printing support
@@ -33,8 +32,7 @@ Provides: ${python:Provides}, python-codespeak-lib
 Suggests: subversion, python-pytest, python-pytest-xdist
 Description: Advanced Python testing tool and networking lib
  The Codespeak py lib aims at supporting a decent Python development process
- addressing deployment, versioning and documentation perspectives. It
- includes:
+ addressing deployment, versioning and documentation perspectives. It includes:
  .
   * py.path: path abstractions over local and Subversion files
   * py.code: dynamic code compile and traceback printing support

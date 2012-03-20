@@ -1,8 +1,11 @@
-codespeak-lib (1.4.7-1.1) unstable; urgency=low
+codespeak-lib (1.4.7-2) UNRELEASED; urgency=low
 
   [ Simon Chopin ]
   * Change the package description to reflect the parting of py.test
   * Add a Python3 package
+
+  [Chris Lamb]
+  * Reflow long description.
 
  -- Simon Chopin <chopin.simon@gmail.com>  Mon, 19 Mar 2012 23:13:07 +0100
 
