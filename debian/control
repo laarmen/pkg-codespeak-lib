@@ -14,7 +14,7 @@ Package: python3-py
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}, python3-pkg-resources
 Suggests: subversion, python-pytest, python-pytest-xdist
-Description: Advanced Python testing tool and networking lib
+Description: Advanced Python development support library
  The Codespeak py lib aims at supporting a decent Python development process
  addressing deployment, versioning and documentation perspectives. It includes:
  .
@@ -30,7 +30,7 @@ Replaces: python-codespeak-lib (<< 1.2.1-3)
 Breaks: python-codespeak-lib (<< 1.2.1-3)
 Provides: ${python:Provides}, python-codespeak-lib
 Suggests: subversion, python-pytest, python-pytest-xdist
-Description: Advanced Python testing tool and networking lib
+Description: Advanced Python development support library
  The Codespeak py lib aims at supporting a decent Python development process
  addressing deployment, versioning and documentation perspectives. It includes:
  .
