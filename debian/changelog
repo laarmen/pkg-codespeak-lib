@@ -1,8 +1,8 @@
-codespeak-lib (1.4.7-3) UNRELEASED; urgency=low
+codespeak-lib (1.4.7-3) unstable; urgency=low
 
   * Update package description. (Closes: #666682)
 
- -- Chris Lamb <lamby@debian.org>  Wed, 04 Apr 2012 11:38:42 +0100
+ -- Chris Lamb <lamby@debian.org>  Wed, 04 Apr 2012 11:40:05 +0100
 
 codespeak-lib (1.4.7-2) unstable; urgency=low
 
