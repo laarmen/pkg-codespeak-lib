@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: py
-Version: 1.4.7
+Version: 1.4.8
 Summary: library with cross-python path, ini-parsing, io, code, log facilities
 Home-page: http://pylib.org
 Author: holger krekel, Guido Wesdorp, Carl Friedrich Bolz, Armin Rigo, Maciej Fijalkowski & others
