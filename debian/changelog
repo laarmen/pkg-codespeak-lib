@@ -1,3 +1,9 @@
+codespeak-lib (1.4.9-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Chris Lamb <lamby@debian.org>  Mon, 02 Jul 2012 10:57:06 +0100
+
 codespeak-lib (1.4.8-1) unstable; urgency=low
 
   * New upstream release. Thanks to Simon Chopin <chopin.simon@gmail.com>.
