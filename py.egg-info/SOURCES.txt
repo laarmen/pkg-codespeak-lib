@@ -80,7 +80,6 @@ py/_process/cmdexec.py
 py/_process/forkedfunc.py
 py/_process/killproc.py
 testing/conftest.py
-testing/test_apipkg.py
 testing/test_iniconfig.py
 testing/code/test_assertion.py
 testing/code/test_code.py
