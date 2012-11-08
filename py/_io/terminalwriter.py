@@ -7,6 +7,8 @@ Helper functions for writing to terminals and files.
 
 import sys, os
 import py
+py3k = sys.version_info[0] >= 3
+from py.builtin import text, bytes
 
 win32_and_ctypes = False
 if sys.platform == "win32":
@@ -160,25 +162,20 @@ class TerminalWriter(object):
 
         self.line(line, **kw)
 
-    def write(self, s, **kw):
-        if s:
-            if not isinstance(self._file, WriteFile):
-                s = self._getbytestring(s)
-                if self.hasmarkup and kw:
-                    s = self.markup(s, **kw)
-            self._file.write(s)
-            self._file.flush()
-
-    def _getbytestring(self, s):
-        # XXX review this and the whole logic
-        if self.encoding and sys.version_info[0] < 3 and isinstance(s, unicode):
-            return s.encode(self.encoding)
-        elif not isinstance(s, str):
+    def write(self, msg, **kw):
+        if msg:
+            if not isinstance(msg, (bytes, text)):
+                msg = text(msg)
+            if self.hasmarkup and kw:
+                markupmsg = self.markup(msg, **kw)
+            else:
+                markupmsg = msg
             try:
-                return str(s)
+                self._file.write(markupmsg)
             except UnicodeEncodeError:
-                return "<print-error '%s' object>" % type(s).__name__
-        return s
+                msg = msg.encode("unicode-escape").decode("ascii")
+                self._file.write(msg)
+            self._file.flush()
 
     def line(self, s='', **kw):
         self.write(s, **kw)
@@ -199,8 +196,10 @@ class TerminalWriter(object):
             self.write(" " * diff2last)
 
 class Win32ConsoleWriter(TerminalWriter):
-    def write(self, s, **kw):
-        if s:
+    def write(self, msg, **kw):
+        if msg:
+            if not isinstance(msg, (bytes, text)):
+                msg = text(msg)
             oldcolors = None
             if self.hasmarkup and kw:
                 handle = GetStdHandle(STD_OUTPUT_HANDLE)
@@ -222,9 +221,11 @@ class Win32ConsoleWriter(TerminalWriter):
                     attr |= oldcolors & 0x0007
 
                 SetConsoleTextAttribute(handle, attr)
-            if not isinstance(self._file, WriteFile):
-                s = self._getbytestring(s)
-            self._file.write(s)
+            try:
+                self._file.write(msg)
+            except UnicodeEncodeError:
+                msg = msg.encode("unicode-escape").decode("ascii")
+                self._file.write(msg)
             self._file.flush()
             if oldcolors:
                 SetConsoleTextAttribute(handle, oldcolors)
@@ -236,7 +237,7 @@ class WriteFile(object):
 
     def write(self, data):
         if self.encoding:
-            data = data.encode(self.encoding)
+            data = data.encode(self.encoding, "replace")
         self._writemethod(data)
 
     def flush(self):
