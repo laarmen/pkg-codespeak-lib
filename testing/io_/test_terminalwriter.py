@@ -1,3 +1,4 @@
+
 import py
 import os, sys
 from py._io import terminalwriter
@@ -75,6 +76,19 @@ def test_unicode_encoding():
         tw = py.io.TerminalWriter(l.append, encoding=encoding)
         tw.line(msg)
         assert l[0].strip() == msg.encode(encoding)
+
+@pytest.mark.parametrize("encoding", ["ascii"])
+def test_unicode_on_file_with_ascii_encoding(tmpdir, monkeypatch, encoding):
+    msg = py.builtin._totext('hell\xf6', "latin1")
+    #pytest.raises(UnicodeEncodeError, lambda: bytes(msg))
+    f = py.std.codecs.open(str(tmpdir.join("x")), "w", encoding)
+    tw = py.io.TerminalWriter(f)
+    tw.line(msg)
+    f.close()
+    s = tmpdir.join("x").open("rb").read().strip()
+    assert encoding == "ascii"
+    assert s == msg.encode("unicode-escape")
+
 
 class TestTerminalWriter:
     def pytest_generate_tests(self, metafunc):

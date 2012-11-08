@@ -1,3 +1,33 @@
+Changes between 1.4.11 and 1.4.12
+==================================================
+
+- fix python2.4 support - for pre-AST interpreters re-introduce 
+  old way to find statements in exceptions (closes pytest issue 209)
+- add tox.ini to distribution
+- fix issue23 - print *,** args information in tracebacks,
+  thanks Manuel Jacob
+
+
+Changes between 1.4.10 and 1.4.11
+==================================================
+
+- use _ast to determine statement ranges when printing tracebacks -
+  avoiding multi-second delays on some large test modules
+- fix an internal test to not use class-denoted pytest_funcarg__
+- fix a doc link to bug tracker
+- try to make terminal.write() printing more robust against
+  unicodeencode/decode problems, amend according test
+- introduce py.builtin.text and py.builtin.bytes
+  to point to respective str/unicode (py2) and bytes/str (py3) types
+- fix error handling on win32/py33 for ENODIR 
+
+Changes between 1.4.9 and 1.4.10
+==================================================
+
+- terminalwriter: default to encode to UTF8 if no encoding is defined
+  on the output stream
+- issue22: improve heuristic for finding the statementrange in exceptions
+
 Changes between 1.4.8 and 1.4.9
 ==================================================
 

@@ -4,6 +4,7 @@ from py._code.code import FormattedExcinfo, ReprExceptionInfo
 queue = py.builtin._tryimport('queue', 'Queue')
 
 failsonjython = py.test.mark.xfail("sys.platform.startswith('java')")
+from test_source import astonly
 
 try:
     import importlib
@@ -91,6 +92,7 @@ class TestTraceback_f_g_h:
         assert s.startswith("def f():")
         assert s.endswith("raise ValueError")
 
+    @astonly
     @failsonjython
     def test_traceback_entry_getsource_in_construct(self):
         source = py.code.Source("""\
@@ -108,7 +110,7 @@ class TestTraceback_f_g_h:
             print (tb[-1].getsource())
             s = str(tb[-1].getsource())
             assert s.startswith("def xyz():\n    try:")
-            assert s.endswith("except somenoname:")
+            assert s.strip().endswith("except somenoname:")
 
     def test_traceback_cut(self):
         co = py.code.Code(f)
@@ -491,6 +493,27 @@ raise ValueError()
         assert tw.lines[0] == "m = " + repr('m' * 90)
         assert tw.lines[1] == "x = 5, y = 13"
         assert tw.lines[2] == "z = " + repr('z' * 120)
+
+    def test_repr_tracebackentry_lines_var_kw_args(self, importasmod):
+        mod = importasmod("""
+            def func1(x, *y, **z):
+                raise ValueError("hello\\nworld")
+        """)
+        excinfo = py.test.raises(ValueError, mod.func1, 'a', 'b', c='d')
+        excinfo.traceback = excinfo.traceback.filter()
+        entry = excinfo.traceback[-1]
+        p = FormattedExcinfo(funcargs=True)
+        reprfuncargs = p.repr_args(entry)
+        assert reprfuncargs.args[0] == ('x', repr('a'))
+        assert reprfuncargs.args[1] == ('y', repr(('b',)))
+        assert reprfuncargs.args[2] == ('z', repr({'c': 'd'}))
+
+        p = FormattedExcinfo(funcargs=True)
+        repr_entry = p.repr_traceback_entry(entry)
+        assert repr_entry.reprfuncargs.args == reprfuncargs.args
+        tw = TWMock()
+        repr_entry.toterminal(tw)
+        assert tw.lines[0] == "x = 'a', y = ('b',), z = {'c': 'd'}"
 
     def test_repr_tracebackentry_short(self, importasmod):
         mod = importasmod("""

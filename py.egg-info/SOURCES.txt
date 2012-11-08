@@ -5,6 +5,7 @@ README.txt
 conftest.py
 distribute_setup.py
 setup.py
+tox.ini
 doc/Makefile
 doc/changelog.txt
 doc/code.txt
@@ -106,10 +107,8 @@ testing/process/test_cmdexec.py
 testing/process/test_forkedfunc.py
 testing/process/test_killproc.py
 testing/root/__init__.py
-testing/root/check_compile.py
 testing/root/test_builtin.py
 testing/root/test_error.py
 testing/root/test_py_imports.py
-testing/root/test_sources.py
 testing/root/test_std.py
 testing/root/test_xmlgen.py
