@@ -1,6 +1,9 @@
 codespeak-lib (1.4.12-1) UNRELEASED; urgency=low
 
   * New upstream release (Closes: #692365)
+  * Alter X-Python3-Version to be optimistic rather than pessimistic about
+    future version support. Thanks to Dmitrijs Ledkovs
+    <dmitrijs.ledkovs@canonical.com> (Closes: #692391)
 
  -- Chris Lamb <lamby@debian.org>  Thu, 08 Nov 2012 23:29:58 +0000
 
