@@ -1,6 +1,6 @@
 import py
 import pytest
-import sys
+import os, sys
 from py.path import local
 import common
 
@@ -179,7 +179,7 @@ class TestLocalPath(common.CommonFSTests):
     def test_init_from_path(self, tmpdir):
         l = local()
         l2 = local(l)
-        assert l2 is l
+        assert l2 == l
 
         wc = py.path.svnwc('.')
         l3 = local(wc)
@@ -221,21 +221,21 @@ class TestLocalPath(common.CommonFSTests):
         # check that breadth comes last
         assert l[0] == p1
 
+    def test_sysfind(self):
+        name = sys.platform == "win32" and "cmd" or "test"
+        x = py.path.local.sysfind(name)
+        assert x.check(file=1)
+        assert py.path.local.sysfind('jaksdkasldqwe') is None
+        assert py.path.local.sysfind(name, paths=[]) is None
+        x2 = py.path.local.sysfind(name, paths=[x.dirpath()])
+        assert x2 == x
+
+
 class TestExecutionOnWindows:
     pytestmark = win32only
 
-    def test_sysfind(self):
-        x = py.path.local.sysfind('cmd')
-        assert x.check(file=1)
-        assert py.path.local.sysfind('jaksdkasldqwe') is None
-
 class TestExecution:
     pytestmark = skiponwin32
-
-    def test_sysfind(self):
-        x = py.path.local.sysfind('test')
-        assert x.check(file=1)
-        assert py.path.local.sysfind('jaksdkasldqwe') is None
 
     def test_sysfind_no_permisson_ignored(self, monkeypatch, tmpdir):
         noperm = tmpdir.ensure('noperm', dir=True)
@@ -593,6 +593,21 @@ class TestPOSIXLocalPath:
         assert gid == stat.gid
         assert group == stat.group
 
+    def test_stat_helpers(self, tmpdir, monkeypatch):
+        path1 = tmpdir.ensure("file")
+        stat1 = path1.stat()
+        stat2 = tmpdir.stat()
+        assert stat1.isfile()
+        assert stat2.isdir()
+        assert not stat1.islink()
+        assert not stat2.islink()
+
+    def test_stat_non_raising(self, tmpdir):
+        path1 = tmpdir.join("file")
+        pytest.raises(py.error.ENOENT, lambda: path1.stat())
+        res = path1.stat(raising=False)
+        assert res is None
+
     def test_atime(self, tmpdir):
         import time
         path = tmpdir.ensure('samplefile')
@@ -655,6 +670,16 @@ class TestPOSIXLocalPath:
             for x,y in oldmodes.items():
                 x.chmod(y)
 
+    def test_copy_archiving(self, tmpdir):
+        f = tmpdir.ensure("a", "file1")
+        a = f.dirpath()
+        oldmode = f.stat().mode
+        newmode = oldmode ^ 1
+        f.chmod(newmode)
+        b = tmpdir.join("b")
+        a.copy(b, mode=True)
+        assert b.join(f.basename).stat().mode == newmode
+
     @failsonjython
     def test_chown_identity(self, path1):
         owner = path1.stat().owner
@@ -677,3 +702,4 @@ class TestPOSIXLocalPath:
         owner = path1.stat().owner
         group = path1.stat().group
         path1.chown(owner, group)
+
