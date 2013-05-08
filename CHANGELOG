@@ -1,3 +1,27 @@
+Changes between 1.4.13 and 1.4.14
+==================================================
+
+- fix dupfile to work with files that don't
+  carry a mode. Thanks Jason R. Coombs.
+
+Changes between 1.4.12 and 1.4.13
+==================================================
+
+- fix getting statementrange/compiling a file ending
+  in a comment line without newline (on python2.5)
+- for local paths you can pass "mode=True" to a copy()
+  in order to copy permission bits (underlying mechanism
+  is using shutil.copymode)
+- add paths arguments to py.path.local.sysfind to restrict
+  search to the diretories in the path.
+- add isdir/isfile/islink to path.stat() objects allowing to perform
+  multiple checks without calling out multiple times
+- drop py.path.local.__new__ in favour of a simpler __init__
+- iniconfig: allow "name:value" settings in config files, no space after
+  "name" required
+- fix issue 27 - NameError in unlikely untested case of saferepr
+
+
 Changes between 1.4.11 and 1.4.12
 ==================================================
 

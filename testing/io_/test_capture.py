@@ -1,3 +1,5 @@
+from __future__ import with_statement
+
 import os, sys
 import py
 
@@ -59,7 +61,7 @@ def test_bytes_io():
     assert s == tobytes("hello")
 
 def test_dontreadfrominput():
-    from py._io.capture import  DontReadFromInput
+    from py._io.capture import DontReadFromInput
     f = DontReadFromInput()
     assert not f.isatty()
     py.test.raises(IOError, f.read)
@@ -91,6 +93,19 @@ def test_dupfile(tmpfile):
     s = tmpfile.read()
     assert "01234" in repr(s)
     tmpfile.close()
+
+def test_dupfile_no_mode():
+    """
+    dupfile should trap an AttributeError and return f if no mode is supplied.
+    """
+    class SomeFileWrapper(object):
+        "An object with a fileno method but no mode attribute"
+        def fileno(self):
+            return 1
+    tmpfile = SomeFileWrapper()
+    assert py.io.dupfile(tmpfile) is tmpfile
+    with py.test.raises(AttributeError):
+        py.io.dupfile(tmpfile, raising=True)
 
 def lsof_check(func):
     pid = os.getpid()
@@ -253,7 +268,7 @@ class TestStdCapture:
         sys.stderr.write("world")
         sys.stdout = py.io.TextIO()
         sys.stderr = py.io.TextIO()
-        print ("not seen" )
+        print ("not seen")
         sys.stderr.write("not seen\n")
         out, err = cap.reset()
         assert out == "hello"
@@ -298,7 +313,7 @@ class TestStdCapture:
     def test_stdin_nulled_by_default(self):
         print ("XXX this test may well hang instead of crashing")
         print ("XXX which indicates an error in the underlying capturing")
-        print ("XXX mechanisms" )
+        print ("XXX mechanisms")
         cap = self.getcapture()
         py.test.raises(IOError, "sys.stdin.read()")
         out, err = cap.reset()
@@ -484,4 +499,3 @@ def test_capturing_and_logging_fundamentals(testdir, method):
         "suspend2, captured*hello2*WARNING:root:hello3*",
     ])
     assert "atexit" not in result.stderr.str()
-
